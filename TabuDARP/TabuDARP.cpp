@@ -6,6 +6,7 @@
 Point poi[maxn];
 double depart[maxn];
 double arrive[maxn];
+int count_request_route[maxn];
 void delete_node(int node[], int poi)
 {
 	int index = -1;
@@ -134,6 +135,7 @@ solution init_solu(int vehicle_number,int vertex_number,int capacity)
 		int temp_vehicle = rand() % vehicle_number + 1;
 		s.tour[temp_vehicle][++s.tour[temp_vehicle][0]] = i;
 		s.tour[temp_vehicle][++s.tour[temp_vehicle][0]] = i + vertex_number / 2;
+		count_request_route[i]++;
 	}
 	return s;
 }
@@ -161,6 +163,7 @@ int main(int argc,char* argv[])
 	read_data(path,vehicle_number, vertex_count, maximum_distance_vehicle, capacity, ridetime);
 	memset(depart, 0, sizeof(depart));
 	memset(arrive, 0, sizeof(arrive));
+	memset(count_request_route, 0, sizeof(count_request_route));
 	solution s0;
 	for (int i = 0; i < vehicle_number; i++)
 	{
