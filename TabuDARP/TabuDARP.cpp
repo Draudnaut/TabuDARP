@@ -68,7 +68,17 @@ std::pair<int, int> req_start_end[maxn]; //request index start and end.
 int request_belong[maxn];
 double alpha, beta, gamma, sigma, tao,lambda,theta;
 double uniform_distribution(double a, double b){return (double)rand() / RAND_MAX * (b - a) + a;}
-double punish_function(double lambda, int n, int m, int ro_ik, double cost) { return lambda * cost*sqrt((double)n*m)*ro_ik; }
+double punish_function(double lambda, int n, int m, int ro_ik, double cost) 
+{ 
+	/*
+	* parameter meanings:
+	  n : request number
+	  m : vehicle number
+	  ro_ik : the number of request i has been added to the route k
+	  lambda: user-identified number
+	*/
+	return lambda * cost*sqrt((double)n*m)*ro_ik; 
+}
 bool isPickup(int point_index, int vertex_count){return point_index <= vertex_count/2;}
 bool isCorespondDelivery(int a, int b, int vertex_count){return 2 * b == 2 * a + vertex_count;}
 double dis(int x, int y){return sqrt((poi[x].x-poi[y].x)*(poi[x].x-poi[y].x)+ (poi[x].y - poi[y].y)*(poi[x].y - poi[y].y));}
