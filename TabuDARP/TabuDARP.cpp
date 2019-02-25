@@ -27,6 +27,7 @@ void insertion(int node[],int poi,int pos)
 		node[i + 1] = node[i];
 	}
 	node[pos] = poi;
+	node[0]++;
 }
 struct solution
 {
