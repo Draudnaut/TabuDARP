@@ -6,7 +6,8 @@ class Tour
 {
 private:
 	int nodelist[200];
-	double time_stamp[200];
+	double depart[200];
+	double arrive[200];
 	int weight[200];
 	double distance[200];
 	bool feasibility;

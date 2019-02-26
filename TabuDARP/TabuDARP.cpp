@@ -17,5 +17,6 @@ int main(int argc,char* argv[])
 	Data d(path);
 	solution s = construct(d);
 	printf("%d\n", s.get_length());
+	std::cout << s.get_feasibility() << std::endl;
 	return 0;
 }

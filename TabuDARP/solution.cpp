@@ -42,6 +42,7 @@ void solution::update(Data &d)
 		2. update cost
 		3. update feasibility
 	*/
+	puts("update solution");
 	for (int i = 0; i < length; i++)
 		tourlist[i].update(d);
 	feasibility = false;

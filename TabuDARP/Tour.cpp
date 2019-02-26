@@ -1,11 +1,12 @@
 #include "pch.h"
 #include "Tour.h"
-
+#include <algorithm>
 Tour::Tour()
 {
 	len = 0; 
-	feasibility = false; 
-	time_stamp[0] = 0;
+	feasibility = true; 
+	depart[0] = 0;
+	arrive[0] = 0;
 	weight[0] = 0;
 	distance[0] = 0;
 }
@@ -16,7 +17,8 @@ Tour::Tour(const Tour & t)
 	for (int i = 0; i < len; i++)
 	{
 		nodelist[i] = t.nodelist[i];
-		time_stamp[i] = t.time_stamp[i];
+		depart[i] = t.depart[i];
+		arrive[i] = t.arrive[i];
 		weight[i] = t.weight[i];
 		distance[i] = t.distance[i];
 		feasibility = t.feasibility;
@@ -50,22 +52,24 @@ int Tour::get_length()
 
 void Tour::update(Data &d)
 {
+	puts("update tour");
 	distance[0] = dis(d.get_point(0),d.get_point(nodelist[0]));
 	weight[0] = d.get_point(nodelist[0]).quality_good;
-	time_stamp[0] = distance[0];
+	depart[0] = 0;
 	for (int i = 1; i < len; i++)
 	{
 		distance[i] = distance[i - 1] + dis(d.get_point(nodelist[i - 1]),d.get_point(nodelist[i]));
 		weight[i] = weight[i - 1] + d.get_point(nodelist[i - 1]).quality_good;
-		time_stamp[i] = distance[i];
-		if (distance[i] > d.get_capacity()) feasibility = false;
+		arrive[i] = distance[i];
+		depart[i] = std::max(arrive[i], (double)d.get_point(nodelist[i]).time_window_end) + 10;
+		if (distance[i] > d.get_capacity()) { feasibility = false;}
 	}
 	for (int i = 0; i < len; i++)
 	{
 		if (PickupOrDelivery(d.get_vertex_number(),nodelist[i]) == delivery) {
 			for (int j = 0; j < i; j++) {
 				if (nodelist[j] - nodelist[i] == d.get_vertex_number() / 2) {
-					if (true) {
+					if (arrive[j]-arrive[i]>d.get_ridetime()) {
 						feasibility = false;
 						break;
 					}
@@ -73,7 +77,14 @@ void Tour::update(Data &d)
 			}
 		}
 	}
-
+	for (int i = 0; i < len; i++)
+	{
+		if (d.get_point(nodelist[i]).time_window_end<arrive[i])
+		{
+			feasibility = false;
+			break;
+		}
+	}
 }
 
 void Tour::delete_node(int index)
