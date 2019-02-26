@@ -27,4 +27,7 @@ struct Point
 	int time_window_end;
 };
 const int maxn = 1005;
+#define pickup 0
+#define delivery 1
+#define depot -1
 #endif //PCH_H

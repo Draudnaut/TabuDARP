@@ -13,4 +13,5 @@ public:
 	int get_maximum_distance_vehicle() { return maximum_distance_vehicle; };
 	int get_capacity() { return capacity; };
 	int get_ridetime() { return ridetime; };
+	Point get_point(int index) { return point[index]; }
 };

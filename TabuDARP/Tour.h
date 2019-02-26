@@ -1,5 +1,7 @@
 #pragma once
 #include "pch.h"
+#include "tool.h"
+#include "Data.h"
 class Tour
 {
 private:
@@ -16,7 +18,7 @@ public:
 	double get_cost();
 	void set_node(int index, int node);
 	int get_length();
-	void update();
+	void update(Data &d);
 	void delete_node(int index);
-	void insert_node(int index, int node);
+	void insert_node(int index, int node,Data &d);
 };

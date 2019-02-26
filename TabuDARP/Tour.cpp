@@ -37,7 +37,7 @@ void Tour::set_node(int index, int node)
 {
 	if (index >= len)
 	{
-		printf("index out of range in tour set\n");
+		printf("index out of range in tour set.\n");
 		exit(-1);
 	}
 	nodelist[index] = node;
@@ -48,9 +48,32 @@ int Tour::get_length()
 	return len;
 }
 
-void Tour::update()
+void Tour::update(Data &d)
 {
-	
+	distance[0] = dis(d.get_point(0),d.get_point(nodelist[0]));
+	weight[0] = d.get_point(nodelist[0]).quality_good;
+	time_stamp[0] = distance[0];
+	for (int i = 1; i < len; i++)
+	{
+		distance[i] = distance[i - 1] + dis(d.get_point(nodelist[i - 1]),d.get_point(nodelist[i]));
+		weight[i] = weight[i - 1] + d.get_point(nodelist[i - 1]).quality_good;
+		time_stamp[i] = distance[i];
+		if (distance[i] > d.get_capacity()) feasibility = false;
+	}
+	for (int i = 0; i < len; i++)
+	{
+		if (PickupOrDelivery(d.get_vertex_number(),nodelist[i]) == delivery) {
+			for (int j = 0; j < i; j++) {
+				if (nodelist[j] - nodelist[i] == d.get_vertex_number() / 2) {
+					if (true) {
+						feasibility = false;
+						break;
+					}
+				}
+			}
+		}
+	}
+
 }
 
 void Tour::delete_node(int index)
@@ -67,10 +90,11 @@ void Tour::delete_node(int index)
 	len = len - 1;
 }
 
-void Tour::insert_node(int index, int node)
+void Tour::insert_node(int index, int node,Data &d)
 {
 	for (int i = index; i < len; i++)
 		nodelist[i + 1] = nodelist[i];
 	nodelist[index] = node;
 	len++;
+	update(d);
 }

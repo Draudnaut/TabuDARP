@@ -35,7 +35,7 @@ bool solution::get_feasibility()
 	return feasibility;
 }
 
-void solution::update()
+void solution::update(Data &d)
 {
 	/*
 		1. update every tour's status
@@ -43,7 +43,7 @@ void solution::update()
 		3. update feasibility
 	*/
 	for (int i = 0; i < length; i++)
-		tourlist[i].update();
+		tourlist[i].update(d);
 	feasibility = false;
 	for (int i = 0; i < length; i++)
 		feasibility &= tourlist[i].get_feasibility();
@@ -56,13 +56,3 @@ void solution::output(const char * direction)
 {
 }
 
-void solution::operator=(const solution & s)
-{
-	length = s.length;
-	cost = s.cost;
-	feasibility = s.feasibility;
-	for (int i = 0; i < length; i++)
-	{
-		tourlist[i] = s.tourlist[i];
-	}
-}

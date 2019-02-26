@@ -161,6 +161,7 @@
     <ClInclude Include="parameter.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="solution.h" />
+    <ClInclude Include="tool.h" />
     <ClInclude Include="Tour.h" />
   </ItemGroup>
   <ItemGroup>
@@ -175,6 +176,7 @@
     </ClCompile>
     <ClCompile Include="solution.cpp" />
     <ClCompile Include="TabuDARP.cpp" />
+    <ClCompile Include="tool.cpp" />
     <ClCompile Include="Tour.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
