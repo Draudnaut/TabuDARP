@@ -153,6 +153,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="construct.h" />
     <ClInclude Include="Data.h" />
     <ClInclude Include="parameter.h" />
     <ClInclude Include="pch.h" />

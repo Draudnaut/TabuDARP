@@ -35,3 +35,7 @@ void solution::update()
 	for (int i = 0; i < length; i++)
 		cost += tourlist[i].get_cost();
 }
+
+void solution::output(const char * direction)
+{
+}

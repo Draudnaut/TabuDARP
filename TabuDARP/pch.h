@@ -26,5 +26,5 @@ struct Point
 	int time_window_start;
 	int time_window_end;
 };
-const int maxn = 105;
+const int maxn = 1005;
 #endif //PCH_H

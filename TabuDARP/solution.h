@@ -13,4 +13,5 @@ public:
 	double get_cost();
 	bool get_feasibility();
 	void update();
+	void output(const char* direction);
 };
