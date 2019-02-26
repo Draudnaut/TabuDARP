@@ -1,6 +1,22 @@
 #include "pch.h"
 #include "solution.h"
 
+solution::solution(const solution & s)
+{
+	length = s.length;
+	cost = s.cost;
+	feasibility = s.feasibility;
+	for (int i = 0; i < length; i++)
+	{
+		tourlist[i] = s.tourlist[i];
+	}
+}
+
+Tour& solution::get_Tour(int index)
+{
+	return tourlist[index];
+}
+
 int solution::get_length()
 {
 	return length;
@@ -38,4 +54,15 @@ void solution::update()
 
 void solution::output(const char * direction)
 {
+}
+
+void solution::operator=(const solution & s)
+{
+	length = s.length;
+	cost = s.cost;
+	feasibility = s.feasibility;
+	for (int i = 0; i < length; i++)
+	{
+		tourlist[i] = s.tourlist[i];
+	}
 }

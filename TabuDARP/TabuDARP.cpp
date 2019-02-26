@@ -3,6 +3,8 @@
 
 #include "pch.h"
 #include "Data.h"
+#include "solution.h"
+#include "construct.h"
 #include <iostream>
 Point poi[maxn];
 double depart[maxn];
@@ -12,7 +14,8 @@ int count_request_route[maxn];
 int main(int argc,char* argv[])
 {
 	const char *path = "E:/dataset/data144_13.txt";
-	
-	Data a(path);
+	Data d(path);
+	solution s = construct(d);
+	printf("%d\n", s.get_length());
 	return 0;
 }

@@ -33,6 +33,9 @@
     <ClInclude Include="construct.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="localsearch.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="parameter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="construct.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -97,6 +97,8 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <HeapReserveSize>10240000</HeapReserveSize>
       <StackReserveSize>10240000</StackReserveSize>
+      <HeapCommitSize>10240000</HeapCommitSize>
+      <StackCommitSize>10240000</StackCommitSize>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -155,12 +157,14 @@
   <ItemGroup>
     <ClInclude Include="construct.h" />
     <ClInclude Include="Data.h" />
+    <ClInclude Include="localsearch.h" />
     <ClInclude Include="parameter.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="solution.h" />
     <ClInclude Include="Tour.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="construct.cpp" />
     <ClCompile Include="Data.cpp" />
     <ClCompile Include="parameter.cpp" />
     <ClCompile Include="pch.cpp">

@@ -3,10 +3,10 @@
 class Tour
 {
 private:
-	int nodelist[maxn];
-	double time_stamp[maxn];
-	int weight[maxn];
-	double distance[maxn];
+	int nodelist[200];
+	double time_stamp[200];
+	int weight[200];
+	double distance[200];
 	bool feasibility;
 	int len;
 public:
