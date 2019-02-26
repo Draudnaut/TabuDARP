@@ -26,10 +26,5 @@ struct Point
 	int time_window_start;
 	int time_window_end;
 };
-struct Status
-{
-	double distance;
-	int weight;
-};
 const int maxn = 105;
 #endif //PCH_H
