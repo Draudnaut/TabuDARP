@@ -3,7 +3,7 @@
 class Data
 {
 private:
-	Point point[maxn];
+	Point point[2005];
 	int vehicle_number, vertex_count, maximum_distance_vehicle, capacity, ridetime;
 	char dataset[200];
 public:

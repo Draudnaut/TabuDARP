@@ -33,6 +33,7 @@ int main(int argc,char* argv[])
 		//para_tabu_search
 
 	#endif
+		end = clock();
 	}
 
 	return 0;
