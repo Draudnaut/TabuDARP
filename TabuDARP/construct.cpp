@@ -4,7 +4,7 @@
 solution construct(Data & d)
 {
 	solution s;
-	for (int i = 1; i <= d.get_vertex_number()/2; i++)
+	for (int i = 1; i < d.get_vertex_number()/2; i++)
 	{
 		int k = rand() % d.get_vehicle_number();
 		s.get_Tour(k).insert_node(s.get_Tour(k).get_length(), i,d);

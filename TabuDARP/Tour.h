@@ -18,7 +18,7 @@ public:
 	Tour();
 	Tour(const Tour &t);
 	bool get_feasibility();
-	double get_cost(Parameter &p);
+	double get_cost(Parameter &p,Data &d);
 	void set_node(int index, int node);
 	int get_length();
 	void update(Data &d);

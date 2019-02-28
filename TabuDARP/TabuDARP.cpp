@@ -16,8 +16,10 @@ int main(int argc,char* argv[])
 	const char *path = "E:/dataset/data144_13.txt";
 	Data d(path);
 	solution s = construct(d);
+	Parameter p(1,1,1,1,0.5,10);
 	printf("%d\n", s.get_length());
+	s.update(p, d);
+	std::cout << s.get_cost(p,d) << std::endl;
 	std::cout << s.get_feasibility() << std::endl;
-	s.output(path);
 	return 0;
 }

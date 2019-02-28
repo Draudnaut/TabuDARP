@@ -30,14 +30,15 @@ bool Tour::get_feasibility()
 	return feasibility;
 }
 
-double Tour::get_cost(Parameter &p)
+double Tour::get_cost(Parameter &p,Data &d)
 {
 	double ans = distance[len - 1];
 	double alpha = p.get_alpha();
 	double beta = p.get_beta();
 	double gamma = p.get_gamma();
 	double tao = p.get_tao();
-	return distance[len-1]+alpha*violation_quality()+beta*violation_duration()+gamma*violation_weight()+tao*violation_ridetime();
+	ans += alpha * violation_quality(d) + beta * violation_duration(d) + gamma * violation_window(d) + tao * violation_ridetime(d);
+	return ans;
 }
 
 void Tour::set_node(int index, int node)
@@ -57,18 +58,20 @@ int Tour::get_length()
 
 void Tour::update(Data &d)
 {
-	puts("update tour");
 	distance[0] = dis(d.get_point(0),d.get_point(nodelist[0]));
 	weight[0] = d.get_point(nodelist[0]).quality_good;
 	depart[0] = 0;
 	for (int i = 1; i < len; i++)
 	{
 		distance[i] = distance[i - 1] + dis(d.get_point(nodelist[i - 1]),d.get_point(nodelist[i]));
-		weight[i] = weight[i - 1] + d.get_point(nodelist[i - 1]).quality_good;
-		arrive[i] = distance[i];
-		depart[i] = std::max(arrive[i], (double)d.get_point(nodelist[i]).time_window_end) + 10;
+		weight[i] = weight[i - 1] + d.get_point(nodelist[i]).quality_good;
+		arrive[i] = depart[i - 1] + dis(d.get_point(nodelist[i-1]),d.get_point(nodelist[i]));
+		depart[i] = arrive[i] + 10;
 		if (distance[i] > d.get_capacity()) { feasibility = false;}
 	}
+	distance[len] = distance[len - 1] + dis(d.get_point(0), d.get_point(nodelist[len - 1]));
+	arrive[len] = depart[len - 1] + dis(d.get_point(0), d.get_point(nodelist[len - 1]));
+	weight[len] = weight[len - 1];
 	for (int i = 0; i < len; i++)
 	{
 		if (PickupOrDelivery(d.get_vertex_number(),nodelist[i]) == delivery) {
@@ -159,8 +162,9 @@ double Tour::violation_ridetime(Data & p)
 			for (int j = 0; j < i; j++)
 			{
 				if (isCorrespondPD(p.get_vertex_number(), nodelist[i], nodelist[j])) {
-					double ridetime_real = arrive[nodelist[i]] - arrive[nodelist[j]];
-					ans += std::max(0.0, ridetime_real - p.get_ridetime());
+					double ridetime_real = arrive[i] - arrive[j];
+					ans += std::max(0.0, ridetime_real - (double)p.get_ridetime());
+					break;
 				}
 			}
 		}

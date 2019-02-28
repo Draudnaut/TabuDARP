@@ -13,9 +13,9 @@ public:
 	solution(const solution & s);
 	Tour &get_Tour(int index);
 	int get_length();
-	double get_cost();
+	double get_cost(Parameter &p,Data &d);
 	bool get_feasibility();
-	void update(Data &d);
+	void update(Parameter &p,Data &d);
 	void output(const char* direction);
 	void set_length(int len) { length = len; }
 };
