@@ -123,3 +123,47 @@ void Tour::output()
 	}
 	puts("");
 }
+
+double Tour::violation_quality(Data &p)
+{
+	double sum = 0.0;
+	for (int i = 0; i < len; i++)
+	{
+		sum += std::max(0,weight[i]-p.get_capacity());
+	}
+	return sum;
+}
+
+double Tour::violation_duration(Data & p)
+{
+	return std::max(0.0,distance[len-1]-(double)p.get_maximum_distance_vehicle());
+}
+
+double Tour::violation_window(Data & p)
+{
+	double sum = 0.0;
+	for (int i = 0; i < len; i++)
+	{
+		sum += std::max(0.0,arrive[i] - (double)p.get_point(nodelist[i]).time_window_end);
+	}
+	return sum;
+}
+
+double Tour::violation_ridetime(Data & p)
+{
+	double ans = 0.0;
+	for (int i = 0; i < len; i++)
+	{
+		if (delivery == PickupOrDelivery(p.get_vertex_number(), nodelist[i]))
+		{
+			for (int j = 0; j < i; j++)
+			{
+				if (isCorrespondPD(p.get_vertex_number(), nodelist[i], nodelist[j])) {
+					double ridetime_real = arrive[nodelist[i]] - arrive[nodelist[j]];
+					ans += std::max(0.0, ridetime_real - p.get_ridetime());
+				}
+			}
+		}
+	}
+	return ans;
+}

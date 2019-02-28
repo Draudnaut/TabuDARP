@@ -17,3 +17,9 @@ int PickupOrDelivery(int vertex_count,int point)
 	else if (point!=0) return 1;
 	else return -1;
 }
+
+bool isCorrespondPD(int vertex_count,int x, int y)
+{
+	if (abs(x - y) == vertex_count / 2) return true;
+	else return false;
+}

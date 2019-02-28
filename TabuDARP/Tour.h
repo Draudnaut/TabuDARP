@@ -3,6 +3,7 @@
 #include "tool.h"
 #include "Data.h"
 #include "parameter.h"
+#include "tool.h"
 class Tour
 {
 private:
@@ -24,8 +25,8 @@ public:
 	void delete_node(int index);
 	void insert_node(int index, int node,Data &d);
 	void output();
-	double violation_quality();
-	double violation_duration();
-	double violation_weight();
-	double violation_ridetime();
+	double violation_quality(Data &p);
+	double violation_duration(Data &p);
+	double violation_window(Data &p);
+	double violation_ridetime(Data &p);
 };
