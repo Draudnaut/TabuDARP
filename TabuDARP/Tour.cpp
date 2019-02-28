@@ -109,3 +109,12 @@ void Tour::insert_node(int index, int node,Data &d)
 	len++;
 	update(d);
 }
+
+void Tour::output()
+{
+	for (int i = 0; i < len; i++)
+	{
+		printf("%d ", nodelist[i]);
+	}
+	puts("");
+}

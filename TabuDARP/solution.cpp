@@ -55,5 +55,10 @@ void solution::update(Data &d)
 
 void solution::output(const char * direction)
 {
+	for (int i = 0; i < length; i++)
+	{
+		//output fucntion
+		tourlist[i].output();
+	}
 }
 

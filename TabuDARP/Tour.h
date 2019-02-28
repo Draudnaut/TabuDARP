@@ -22,4 +22,5 @@ public:
 	void update(Data &d);
 	void delete_node(int index);
 	void insert_node(int index, int node,Data &d);
+	void output();
 };
