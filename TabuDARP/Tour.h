@@ -2,6 +2,7 @@
 #include "pch.h"
 #include "tool.h"
 #include "Data.h"
+#include "parameter.h"
 class Tour
 {
 private:
@@ -16,11 +17,15 @@ public:
 	Tour();
 	Tour(const Tour &t);
 	bool get_feasibility();
-	double get_cost();
+	double get_cost(Parameter &p);
 	void set_node(int index, int node);
 	int get_length();
 	void update(Data &d);
 	void delete_node(int index);
 	void insert_node(int index, int node,Data &d);
 	void output();
+	double violation_quality();
+	double violation_duration();
+	double violation_weight();
+	double violation_ridetime();
 };

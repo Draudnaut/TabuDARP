@@ -167,6 +167,7 @@
   <ItemGroup>
     <ClCompile Include="construct.cpp" />
     <ClCompile Include="Data.cpp" />
+    <ClCompile Include="localsearch.cpp" />
     <ClCompile Include="parameter.cpp" />
     <ClCompile Include="pch.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

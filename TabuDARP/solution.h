@@ -1,5 +1,6 @@
 #pragma once
 #include "Tour.h"
+#include "parameter.h"
 class solution
 {
 private:

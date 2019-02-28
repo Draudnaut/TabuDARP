@@ -30,9 +30,14 @@ bool Tour::get_feasibility()
 	return feasibility;
 }
 
-double Tour::get_cost()
+double Tour::get_cost(Parameter &p)
 {
-	return distance[len-1];
+	double ans = distance[len - 1];
+	double alpha = p.get_alpha();
+	double beta = p.get_beta();
+	double gamma = p.get_gamma();
+	double tao = p.get_tao();
+	return distance[len-1]+alpha*violation_quality()+beta*violation_duration()+gamma*violation_weight()+tao*violation_ridetime();
 }
 
 void Tour::set_node(int index, int node)
