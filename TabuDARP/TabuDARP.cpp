@@ -5,7 +5,9 @@
 #include "Data.h"
 #include "solution.h"
 #include "construct.h"
+#include "localsearch.h"
 #include <iostream>
+#define NONE_PARALLEL
 Point poi[maxn];
 double depart[maxn];
 double arrive[maxn];
@@ -21,5 +23,17 @@ int main(int argc,char* argv[])
 	s.update(p, d);
 	std::cout << s.get_cost(p,d) << std::endl;
 	std::cout << s.get_feasibility() << std::endl;
+	clock_t end, start;
+	start = end = clock();
+	while (end - start < 60 * CLOCKS_PER_SEC)
+	{
+	#ifdef NONE_PARALLEL
+		Tabu_search(s, p);
+	#else
+		//para_tabu_search
+
+	#endif
+	}
+
 	return 0;
 }
