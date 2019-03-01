@@ -29,4 +29,5 @@ public:
 	double violation_duration(Data &p);
 	double violation_window(Data &p);
 	double violation_ridetime(Data &p);
+	bool operator == (Tour &t);
 };

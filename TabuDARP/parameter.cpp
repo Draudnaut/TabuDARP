@@ -11,6 +11,16 @@ Parameter::Parameter(double _alpha, double _beta, double _gamma, double _tao, do
 	eta = _eta;
 }
 
+Parameter::Parameter(const Parameter & p)
+{
+	alpha = p.alpha;
+	beta = p.beta;
+	gamma = p.gamma;
+	tao = p.tao;
+	delta = p.delta;
+	eta = p.eta;
+}
+
 double Parameter::get_alpha()
 {
 	return alpha;

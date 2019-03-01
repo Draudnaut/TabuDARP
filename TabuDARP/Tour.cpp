@@ -171,3 +171,14 @@ double Tour::violation_ridetime(Data & p)
 	}
 	return ans;
 }
+
+bool Tour::operator==(Tour & t)
+{
+	if (len != t.len) return false;
+	bool result = true;
+	for (int i = 0; i < len; i++)
+	{
+		if (nodelist[i] != t.nodelist[i]) result = false;
+	}
+	return result;
+}

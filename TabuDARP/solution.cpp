@@ -63,3 +63,26 @@ void solution::output(const char * direction)
 	}
 }
 
+bool solution::operator==(solution & s)
+{
+	bool result = false;
+	if (s.length != length) return false;
+	else
+	{
+		
+		for (int i = 0; i < length; i++) 
+		{
+			bool temp = false;
+			for (int j = 0; j < s.length; j++)
+			{
+				if (tourlist[i] == s.get_Tour(j)) {
+					temp = true;
+					break;
+				}
+			}
+			result &= temp;
+		}
+	}
+	return result;
+}
+
