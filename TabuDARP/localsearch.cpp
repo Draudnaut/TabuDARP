@@ -46,6 +46,12 @@ void TabuSearch(solution s, Parameter p,Memory &m,Data &d)
 		t2.insert_node(t2.get_length(), delivery_remove, d);
 		m.updateRecordOfRequestMove(pickup_remove, current_iterator);
 		m.update_request_memory(tour2, pickup_remove);
+		/*choose whether to update tour*/
+		t1.update(d);
+		t2.update(d);
+		if (t1.get_cost(p, d) + t2.get_cost(p, d) < s.get_Tour(tour1).get_cost() + s.get_Tour(tour2).get_cost()) {
+			/*update cost*/
+		}
 	}
 }
 
