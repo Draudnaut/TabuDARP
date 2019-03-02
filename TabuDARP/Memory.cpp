@@ -4,7 +4,7 @@
 Memory::Memory()
 {
 	memset(request_belong, -1, sizeof(request_belong));
-	memset(RecordOfRequestMove, -1, sizeof(RecordOfRequestBelong));
+	memset(RecordOfRequestMove, -1, sizeof(RecordOfRequestMove));
 }
 
 void Memory::update_request_memory(int Tourid, int request)

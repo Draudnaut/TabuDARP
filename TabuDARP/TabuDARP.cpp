@@ -30,6 +30,6 @@ int main(int argc,char* argv[])
 	
 	Parameter p(1,1,1,1,0.5,10,1000);
 	/*Tabu Search components*/
-	TabuSearch(s, p, m);
+	TabuSearch(s, p, m, d);
 	return 0;
 }

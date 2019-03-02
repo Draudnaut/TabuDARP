@@ -87,7 +87,7 @@ bool solution::operator==(const solution & s)
 	return result;
 }
 
-bool solution::operator<(const solution & s)
+bool solution::operator< (const solution & s) const
 {
 	return cost<s.cost;
 }
