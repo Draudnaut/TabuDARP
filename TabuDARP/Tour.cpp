@@ -172,7 +172,7 @@ double Tour::violation_ridetime(Data & p)
 	return ans;
 }
 
-bool Tour::operator==(Tour & t)
+bool Tour::operator==(const Tour & t)
 {
 	if (len != t.len) return false;
 	bool result = true;
@@ -181,4 +181,9 @@ bool Tour::operator==(Tour & t)
 		if (nodelist[i] != t.nodelist[i]) result = false;
 	}
 	return result;
+}
+
+std::vector<int> Tour::get_nodelist()
+{
+	return std::vector<int>(nodelist,nodelist+len);
 }

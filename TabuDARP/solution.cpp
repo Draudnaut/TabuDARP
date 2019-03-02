@@ -63,10 +63,11 @@ void solution::output(const char * direction)
 	}
 }
 
-bool solution::operator==(solution & s)
+bool solution::operator==(const solution & s)
 {
 	bool result = false;
 	if (s.length != length) return false;
+	if (s.cost != cost) return false;
 	else
 	{
 		
@@ -75,7 +76,7 @@ bool solution::operator==(solution & s)
 			bool temp = false;
 			for (int j = 0; j < s.length; j++)
 			{
-				if (tourlist[i] == s.get_Tour(j)) {
+				if (tourlist[i] == s.tourlist[j]) {
 					temp = true;
 					break;
 				}
@@ -84,5 +85,10 @@ bool solution::operator==(solution & s)
 		}
 	}
 	return result;
+}
+
+bool solution::operator<(const solution & s)
+{
+	return cost<s.cost;
 }
 

@@ -21,9 +21,15 @@ int main(int argc,char* argv[])
 	const char *path = "E:/dataset/data144_13.txt";
 	Data d(path);
 	Memory m;
-	solution s = construct(d,m);
-	Parameter p(1,1,1,1,0.5,10);
+	solution s;
+	int search_function = Tabu;
+
+	if (search_function == Tabu) s = construct_Tabu(d, m);
+	else if (search_function == VNS) s = construct_VNS(d, m);
+	else s = construct_Para(d, m);
+	
+	Parameter p(1,1,1,1,0.5,10,1000);
 	/*Tabu Search components*/
-	TabuSearch(s, p);
+	TabuSearch(s, p, m);
 	return 0;
 }

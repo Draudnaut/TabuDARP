@@ -4,6 +4,7 @@
 #include "Data.h"
 #include "parameter.h"
 #include "tool.h"
+#include "vector"
 class Tour
 {
 private:
@@ -29,5 +30,6 @@ public:
 	double violation_duration(Data &p);
 	double violation_window(Data &p);
 	double violation_ridetime(Data &p);
-	bool operator == (Tour &t);
+	bool operator == (const Tour &t);
+	std::vector<int> get_nodelist();
 };

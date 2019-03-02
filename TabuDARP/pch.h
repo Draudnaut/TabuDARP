@@ -30,4 +30,7 @@ const int maxn = 1005;
 #define pickup 0
 #define delivery 1
 #define depot -1
+#define Tabu 2
+#define VNS 3
+#define PARA 4
 #endif //PCH_H

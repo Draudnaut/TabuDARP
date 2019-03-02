@@ -18,5 +18,6 @@ public:
 	void update(Parameter &p,Data &d);
 	void output(const char* direction);
 	void set_length(int len) { length = len; }
-	bool operator == (solution &s);
+	bool operator == (const solution &s);
+	bool operator < (const solution &s);
 };

@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "parameter.h"
 
-Parameter::Parameter(double _alpha, double _beta, double _gamma, double _tao, double _delta, double _eta)
+Parameter::Parameter(double _alpha, double _beta, double _gamma, double _tao, double _delta, double _eta, int ke)
 {
 	alpha = _alpha;
 	beta = _beta;
@@ -9,6 +9,7 @@ Parameter::Parameter(double _alpha, double _beta, double _gamma, double _tao, do
 	tao = _tao;
 	delta = _delta;
 	eta = _eta;
+	this->ke = ke;
 }
 
 Parameter::Parameter(const Parameter & p)
@@ -49,6 +50,11 @@ double Parameter::get_delta()
 double Parameter::get_eta()
 {
 	return eta;
+}
+
+int Parameter::get_ke()
+{
+	return ke;
 }
 
 void Parameter::update(bool feasible)
