@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "construct.h"
 
-solution construct(Data & d,Memory &m)
+solution construct_Tabu(Data & d,Memory &m)
 {
 	solution s;
 	for (int i = 1; i < d.get_vertex_number()/2; i++)

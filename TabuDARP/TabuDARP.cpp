@@ -23,10 +23,6 @@ int main(int argc,char* argv[])
 	Memory m;
 	solution s = construct(d,m);
 	Parameter p(1,1,1,1,0.5,10);
-	printf("%d\n", s.get_length());
-	s.update(p, d);
-	std::cout << s.get_cost(p,d) << std::endl;
-	std::cout << s.get_feasibility() << std::endl;
 	/*Tabu Search components*/
 	TabuSearch(s, p);
 	return 0;

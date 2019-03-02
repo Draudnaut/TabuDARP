@@ -1,16 +1,13 @@
 #include "pch.h"
 #include "localsearch.h"
 
-void Tabu_search(solution & s, Parameter & p)
-{
-}
 
 solution getNeighbors(solution s)
 {
 	return solution();
 }
 
-void TabuSearch(solution s, Parameter p)
+void TabuSearch(solution s, Parameter p,Memory &m)
 {
 	clock_t end, start;
 	start = end = clock();
