@@ -19,3 +19,13 @@ solution construct_Tabu(Data & d,Memory &m)
 	}
 	return s;
 }
+
+solution construct_VNS(Data & d, Memory & m)
+{
+	return solution();
+}
+
+solution construct_Para(Data & d, Memory & m)
+{
+	return solution();
+}
