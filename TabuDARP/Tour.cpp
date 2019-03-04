@@ -95,18 +95,22 @@ void Tour::update(Data &d)
 	}
 }
 
-void Tour::delete_node(int index)
+void Tour::delete_node(int node)
 {
-	if (index < 0 || index >= len)
+	int index = -1;
+	for (int i = 0; i < len; i++)
 	{
-		printf("delete node error,out of range\n");
-		exit(-1);
+		if (nodelist[i] == node)
+		{
+			index = i;
+			break;
+		}
 	}
 	for (int i = index + 1; i < len; i++)
 	{
 		nodelist[i - 1] = nodelist[i];
 	}
-	len = len - 1;
+	len--;
 }
 
 void Tour::insert_node(int index, int node,Data &d)
@@ -181,6 +185,11 @@ bool Tour::operator==(const Tour & t)
 		if (nodelist[i] != t.nodelist[i]) result = false;
 	}
 	return result;
+}
+
+double Tour::hard_cost()
+{
+	return distance[len-1];
 }
 
 std::vector<int> Tour::get_nodelist()

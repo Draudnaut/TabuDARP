@@ -63,7 +63,7 @@ void solution::output(const char * direction)
 	}
 }
 
-bool solution::operator==(const solution & s)
+bool solution::operator==(solution & s)
 {
 	bool result = false;
 	if (s.length != length) return false;
@@ -90,5 +90,15 @@ bool solution::operator==(const solution & s)
 bool solution::operator< (const solution & s) const
 {
 	return cost<s.cost;
+}
+
+double solution::hard_cost()
+{
+	double sum = 0;
+	for (int i = 0; i < length; i++)
+	{
+		sum += tourlist[i].hard_cost();
+	}
+	return sum;
 }
 

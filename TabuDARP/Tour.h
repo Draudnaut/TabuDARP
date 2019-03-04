@@ -31,5 +31,6 @@ public:
 	double violation_window(Data &p);
 	double violation_ridetime(Data &p);
 	bool operator == (const Tour &t);
+	double hard_cost();
 	std::vector<int> get_nodelist();
 };

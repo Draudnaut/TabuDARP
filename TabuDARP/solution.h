@@ -19,6 +19,7 @@ public:
 	void output(const char* direction);
 	void set_length(int len) { length = len; }
 	void set_tourlist(Tour t, int index) { tourlist[index] = t; }
-	bool operator == (const solution &s);
+	bool operator == (solution &s);
 	bool operator < (const solution &s) const;
+	double hard_cost();
 };
