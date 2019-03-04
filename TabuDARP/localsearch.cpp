@@ -7,6 +7,7 @@ std::vector<neighbor_structure> getNeighbors(solution s, Memory & m,Data &d)
 	int length = s.get_length();
 	for (int i = 0; i < length; i++)
 	{
+		if (ans.size() == 400) break;
 		neighbor_structure temp_neighbor;
 		for (int j = i + 1; j < length; j++)
 		{
@@ -57,29 +58,32 @@ void TabuSearch(solution s, Parameter p,Memory &m,Data &d)
 	tabuList.push(sBest);
 	const int max_tabu_size = 20;
 	start = end = clock();
-	while (end - start < 60 * CLOCKS_PER_SEC)
+	int tabu_length = tabuList.size();
+	while (end - start < 5*60 * CLOCKS_PER_SEC)
 	{
 		++current_iterator;
 		//printf("iterator : %d\n", current_iterator);
 		//if (current_iterator == p.get_ke())  bestCandidate = BigRemove(bestCandidate);
-		std::vector<neighbor_structure> sNeighborhood;
+		std::vector<neighbor_structure> sNeighborhood = getNeighbors(bestCandidate, m, d);
+		solution tbCandidate = bestCandidate;
 		for (auto sCandidate_representation : sNeighborhood)
 		{
-			sNeighborhood = getNeighbors(tabuList.top(), m, d);
 			solution sCandidate = present_solution(bestCandidate,sCandidate_representation,p,d);
-			sCandidate.update(p, d);
-			printf("sCandidate: \n\ttour1 : %.4lf\n\ttour2 : %.4lf\n", sCandidate.get_Tour(sCandidate_representation.tour1).get_cost(p, d),sCandidate.get_Tour(sCandidate_representation.tour2).get_cost(p, d));
-			if ((not tabulist_contains(tabuList, sCandidate) and sCandidate.get_cost(p,d) < bestCandidate.get_cost(p,d)))
+			sCandidate.update(p, d);	
+			if ((not tabulist_contains(tabuList, sCandidate) and sCandidate.get_cost(p,d) < tbCandidate.get_cost(p,d)))
 			{
-				bestCandidate = sCandidate;
+				//printf("update sCandidate , cost = %.4lf\n", sCandidate.get_cost(p,d));
+				tbCandidate = sCandidate;
 			}
 		}
+		if (tbCandidate.get_cost(p, d) < bestCandidate.get_cost(p, d)) bestCandidate = tbCandidate;
 		if (bestCandidate.get_cost(p,d) < sBest.get_cost(p,d))
 		{
 			printf("update sBest,sBest cost = %.4lf\n",sBest.get_cost(p,d));
 			sBest = bestCandidate;
 		}
 		tabuList.push(bestCandidate);
+		if (tabuList.size() > tabu_length) { tabu_length = tabuList.size(); printf("tabu list length : %d\n", tabuList.size()); }
 		tabuList.pop();
 		//p.update(sBest.get_feasibility());
 		if (current_iterator % 10 == 0) {
