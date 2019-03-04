@@ -32,16 +32,11 @@ solution BigRemove(solution s)
 	return s;
 }
 
-bool tabulist_contains(std::priority_queue<solution, std::vector<solution>, std::less<solution>> tabuList, solution &s)
+bool tabulist_contains(std::vector<solution> &tabuList, solution &s)
 {
-	while (tabuList.empty() != true)
+	for (auto item : tabuList)
 	{
-		solution t = tabuList.top();
-		if(t==s)
-		{
-			return true;
-		}
-		tabuList.pop();
+		if (s == item) return true;
 	}
 	return false;
 }
@@ -54,12 +49,13 @@ void TabuSearch(solution s, Parameter p,Memory &m,Data &d)
 	solution bestCandidate = s;
 	sBest.update(p, d);
 	bestCandidate.update(p, d);
-	static std::priority_queue<solution, std::vector<solution>,std::less<solution>> tabuList;
-	tabuList.push(sBest);
+	static std::vector<solution> tabuList;
+	tabuList.reserve(1000);
+	tabuList.push_back(sBest);
 	const int max_tabu_size = 20;
 	start = end = clock();
 	int tabu_length = tabuList.size();
-	while (end - start < 5*60 * CLOCKS_PER_SEC)
+	while (end - start < 2*60 * CLOCKS_PER_SEC)
 	{
 		++current_iterator;
 		//printf("iterator : %d\n", current_iterator);
@@ -82,21 +78,23 @@ void TabuSearch(solution s, Parameter p,Memory &m,Data &d)
 			printf("update sBest,sBest cost = %.4lf\n",sBest.get_cost(p,d));
 			sBest = bestCandidate;
 		}
-		tabuList.push(bestCandidate);
-		if (tabuList.size() > tabu_length) { tabu_length = tabuList.size(); printf("tabu list length : %d\n", tabuList.size()); }
-		tabuList.pop();
+		tabuList.push_back(bestCandidate);
+		//if (tabuList.size() > tabu_length) { tabu_length = tabuList.size(); printf("tabu list length : %d\n", tabuList.size()); }
+		//tabuList.pop();
 		//p.update(sBest.get_feasibility());
 		if (current_iterator % 10 == 0) {
 			//checkpoint;
 			printf("--------------current solution-----------------\n");
 			if (sBest.get_feasibility() == false) {
 				printf("infeasible solution cost : %.4lf , hard_cost = %.4lf\n", sBest.get_cost(p,d),sBest.hard_cost());
+				printf("TabuList size : %d\n", tabuList.size());
 			}
 			else {
 				printf("feasible solution cost : %.4lf\n", sBest.get_cost(p, d));
 			}
 		}
 		end = clock();
+		//printf("iter : %d\n", current_iterator);
 	}
 }
 
