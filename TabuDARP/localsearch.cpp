@@ -27,8 +27,62 @@ std::vector<neighbor_structure> getNeighbors(solution s, Memory & m,Data &d)
 	return ans;
 }
 
-solution BigRemove(solution s)
+solution BigRemove(solution s,Data &d,Parameter &p)
 {
+	int length = s.get_length();
+	for (int i = 0; i < length; i++)
+	{
+		Tour change = s.get_Tour(i);
+		std::vector<int> nodelist = change.get_nodelist();
+		for (int j=0;j<nodelist.size();j++)
+		{
+			if (PickupOrDelivery(d.get_vertex_number(),nodelist[j]) == pickup)
+			{
+				Tour tChange = change;
+				tChange.delete_node(nodelist[j]);
+				int correspoondDelivery = nodelist[j] + d.get_vertex_number() / 2;
+				int indexPickupToInsert = -1;
+				for (int k = 0; k < nodelist.size()&&nodelist[k]!=correspoondDelivery; k++)
+				{
+					tChange.insert_node(k, nodelist[j], d);
+					double cost = tChange.get_cost(p, d);
+					if (cost < change.get_cost(p, d)) indexPickupToInsert = k;
+					tChange.delete_node(nodelist[j]);
+				}
+				if (indexPickupToInsert != -1)
+				{
+					change.delete_node(nodelist[i]);
+					change.insert_node(indexPickupToInsert, nodelist[i], d);
+					s.set_tourlist(change, i);
+				}
+			}
+			else
+			{
+				Tour tChange = change;
+				int correspondPickup = nodelist[j] - d.get_vertex_number() / 2;
+				int indexCorrespondPickup = -1;
+				for (int k = 0; k < nodelist.size(); k++)
+				{
+					if (nodelist[k]==indexCorrespondPickup)
+					{
+						indexCorrespondPickup = j;
+						break;
+					}
+				}
+				tChange.delete_node(nodelist[i]);
+				int indexToInsertDelivery = -1;
+				for (int k = indexCorrespondPickup + 1; k < nodelist.size(); k++)
+				{
+					tChange.insert_node(k, nodelist[i], d);
+					double cost = tChange.get_cost(p, d);
+					if (cost < change.get_cost(p, d))
+					{
+						indexToInsertDelivery = k;
+					}
+				}
+			}
+		}
+	}
 	return s;
 }
 

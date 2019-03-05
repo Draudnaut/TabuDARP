@@ -23,7 +23,7 @@ public:
 	void set_node(int index, int node);
 	int get_length();
 	void update(Data &d);
-	void delete_node(int index);
+	void delete_node(int node);
 	void insert_node(int index, int node,Data &d);
 	void output();
 	double violation_quality(Data &p);

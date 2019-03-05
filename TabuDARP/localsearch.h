@@ -13,7 +13,7 @@ struct neighbor_structure
 	int request;
 };
 std::vector<neighbor_structure> getNeighbors(solution s,Memory &m, Data &d);
-solution BigRemove(solution s);
+solution BigRemove(solution s,Data &d,Parameter &p);
 bool tabulist_contains(std::vector<int> &tabuList,solution &s);
 void TabuSearch(solution s, Parameter p,Memory &m,Data &d);
 void VariableNeighborSearch(solution s, Parameter p);
