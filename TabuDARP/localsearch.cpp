@@ -39,6 +39,7 @@ solution BigRemove(solution s,Data &d,Parameter &p)
 			if (PickupOrDelivery(d.get_vertex_number(),nodelist[j]) == pickup)
 			{
 				Tour tChange = change;
+				double costChange = change.get_cost(p, d);
 				tChange.delete_node(nodelist[j]);
 				int correspoondDelivery = nodelist[j] + d.get_vertex_number() / 2;
 				int indexPickupToInsert = -1;
@@ -46,19 +47,24 @@ solution BigRemove(solution s,Data &d,Parameter &p)
 				{
 					tChange.insert_node(k, nodelist[j], d);
 					double cost = tChange.get_cost(p, d);
-					if (cost < change.get_cost(p, d)) indexPickupToInsert = k;
+					if (cost < costChange)
+					{
+						indexPickupToInsert = k;
+						costChange = cost;
+					}
 					tChange.delete_node(nodelist[j]);
 				}
 				if (indexPickupToInsert != -1)
 				{
-					change.delete_node(nodelist[i]);
-					change.insert_node(indexPickupToInsert, nodelist[i], d);
-					s.set_tourlist(change, i);
+					change.delete_node(nodelist[j]);
+					change.insert_node(indexPickupToInsert, nodelist[j], d);
+					s.set_tourlist(change, j);
 				}
 			}
 			else
 			{
 				Tour tChange = change;
+				double costChange = tChange.get_cost(p, d);
 				int correspondPickup = nodelist[j] - d.get_vertex_number() / 2;
 				int indexCorrespondPickup = -1;
 				for (int k = 0; k < nodelist.size(); k++)
@@ -75,10 +81,17 @@ solution BigRemove(solution s,Data &d,Parameter &p)
 				{
 					tChange.insert_node(k, nodelist[i], d);
 					double cost = tChange.get_cost(p, d);
-					if (cost < change.get_cost(p, d))
+					if (cost < costChange)
 					{
+						costChange = cost;
 						indexToInsertDelivery = k;
 					}
+				}
+				if (indexToInsertDelivery != -1)
+				{
+					change.delete_node(nodelist[j]);
+					change.insert_node(indexToInsertDelivery, nodelist[j], d);
+					s.set_tourlist(change, j);
 				}
 			}
 		}
