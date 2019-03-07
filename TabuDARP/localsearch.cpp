@@ -29,6 +29,7 @@ std::vector<neighbor_structure> getNeighbors(solution s, Memory & m,Data &d)
 
 solution BigRemove(solution s,Data &d,Parameter &p)
 {
+	puts("Big operator");
 	int length = s.get_length();
 	for (int i = 0; i < length; i++)
 	{
@@ -36,6 +37,7 @@ solution BigRemove(solution s,Data &d,Parameter &p)
 		std::vector<int> nodelist = change.get_nodelist();
 		for (int j=0;j<nodelist.size();j++)
 		{
+			puts("pick up small operator");
 			if (PickupOrDelivery(d.get_vertex_number(),nodelist[j]) == pickup)
 			{
 				Tour tChange = change;
@@ -63,13 +65,14 @@ solution BigRemove(solution s,Data &d,Parameter &p)
 			}
 			else
 			{
+				puts("move delivery");
 				Tour tChange = change;
 				double costChange = tChange.get_cost(p, d);
 				int correspondPickup = nodelist[j] - d.get_vertex_number() / 2;
 				int indexCorrespondPickup = -1;
 				for (int k = 0; k < nodelist.size(); k++)
 				{
-					if (nodelist[k]==indexCorrespondPickup)
+					if (nodelist[k]==correspondPickup)
 					{
 						indexCorrespondPickup = j;
 						break;
@@ -110,14 +113,14 @@ bool tabulist_contains(std::vector<solution> &tabuList, solution &s)
 
 void TabuSearch(solution s, Parameter p,Memory &m,Data &d)
 {
-	int current_iterator = -1;
+	int current_iterator = 0;
 	clock_t end, start;
 	solution sBest = s;
 	solution bestCandidate = s;
 	sBest.update(p, d);
 	bestCandidate.update(p, d);
 	static std::vector<solution> tabuList;
-	tabuList.reserve(1000);
+	//tabuList.reserve(1000);
 	tabuList.push_back(sBest);
 	const int max_tabu_size = 20;
 	start = end = clock();
@@ -125,8 +128,14 @@ void TabuSearch(solution s, Parameter p,Memory &m,Data &d)
 	while (end - start < 2*60 * CLOCKS_PER_SEC)
 	{
 		++current_iterator;
-		//printf("iterator : %d\n", current_iterator);
-		//if (current_iterator == p.get_ke())  bestCandidate = BigRemove(bestCandidate);
+		printf("iterator : %d\n", current_iterator);
+		if (current_iterator % p.get_ke() == 0) 
+		{ 
+			bestCandidate = BigRemove(bestCandidate, d, p); 
+			bestCandidate.update(p, d); 
+			printf("Big update completed. cost : %.4lf\n", bestCandidate.get_cost(p, d));
+		}
+		puts("small update");
 		std::vector<neighbor_structure> sNeighborhood = getNeighbors(bestCandidate, m, d);
 		solution tbCandidate = bestCandidate;
 		for (auto sCandidate_representation : sNeighborhood)
@@ -142,8 +151,8 @@ void TabuSearch(solution s, Parameter p,Memory &m,Data &d)
 		if (tbCandidate.get_cost(p, d) < bestCandidate.get_cost(p, d)) bestCandidate = tbCandidate;
 		if (bestCandidate.get_cost(p,d) < sBest.get_cost(p,d))
 		{
-			printf("update sBest,sBest cost = %.4lf\n",sBest.get_cost(p,d));
 			sBest = bestCandidate;
+			printf("update sBest,sBest cost = %.4lf\n",sBest.get_cost(p,d));
 		}
 		tabuList.push_back(bestCandidate);
 		//if (tabuList.size() > tabu_length) { tabu_length = tabuList.size(); printf("tabu list length : %d\n", tabuList.size()); }
@@ -179,17 +188,6 @@ solution present_solution(solution Base, neighbor_structure change,Parameter &p,
 	Tour tour2 = Base.get_Tour(change.tour2);
 	//printf("before changed cost: \n\ttour1 : %.4lf\n\ttour2 : %.4lf\n", tour1.get_cost(p, d), tour2.get_cost(p, d));
 	std::vector<int> nodelist = tour1.get_nodelist();
-	int index_pickup=-1, index_delivery=-1;
-	for (int i = 0; i < nodelist.size(); i++)
-	{
-		if (nodelist[i] == change.request) index_pickup = i;
-		if (nodelist[i] == change.request + d.get_vertex_number() / 2) index_delivery = i;
-	}
-	if (index_pickup == -1 || index_delivery == -1) {
-		printf("ERROR in index pickup\n");
-		printf("%d %d %d\n", change.tour1, change.tour2, change.request);
-		exit(-1);
-	}
 	tour1.delete_node(change.request);
 	tour1.delete_node(change.request + d.get_vertex_number() / 2);
 	tour2.insert_node(tour2.get_length(), change.request, d);

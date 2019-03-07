@@ -115,7 +115,7 @@ void Tour::delete_node(int node)
 
 void Tour::insert_node(int index, int node,Data &d)
 {
-	for (int i = index; i < len; i++)
+	for (int i = len; i >= index; i--)
 		nodelist[i + 1] = nodelist[i];
 	nodelist[index] = node;
 	len++;

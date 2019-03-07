@@ -28,7 +28,7 @@ int main(int argc,char* argv[])
 	else if (search_function == VNS) s = construct_VNS(d, m);
 	else s = construct_Para(d, m);
 	
-	Parameter p(1,1,1,1,0.5,10,1000);
+	Parameter p(1,1,1,1,0.5,10,5);
 	/*Tabu Search components*/
 	TabuSearch(s, p, m, d);
 	return 0;
