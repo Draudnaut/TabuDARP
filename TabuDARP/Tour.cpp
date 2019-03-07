@@ -196,3 +196,41 @@ std::vector<int> Tour::get_nodelist()
 {
 	return std::vector<int>(nodelist,nodelist+len);
 }
+
+void Tour::checkFeasibility(Data &d)
+{
+	/*time window feasibility*/
+	for (int i = 0; i < len; i++)
+	{
+		if (arrive[i] > d.get_point(nodelist[i]).time_window_end)
+			printf("time window violation\n");
+	}
+	/*weight feasibility*/
+	for (int i = 0; i < len; i++)
+	{
+		if (weight[i] > d.get_capacity())
+			printf("weight violation\n");
+	}
+	/*ridetime feasibility*/
+	for (int i = 0; i < len; i++)
+	{
+		if (PickupOrDelivery(d.get_vertex_number(),nodelist[i]) == pickup)
+		{
+			for (int j = i + 1; j < len; j++)
+			{
+				if (isCorrespondPD(d.get_vertex_number(), nodelist[i], nodelist[j]))
+				{
+					if (arrive[j] - arrive[i] > d.get_ridetime())
+					{
+						printf("violation of ridetime");
+					}
+				}
+			}
+		}
+	}
+	/*duration feasibilty*/
+	if (distance[len-1]>d.get_capacity())
+	{
+		printf("duration feasibility violation");
+	}
+}

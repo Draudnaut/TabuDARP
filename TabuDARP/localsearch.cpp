@@ -1,19 +1,20 @@
 #include "pch.h"
 #include "localsearch.h"
 
-std::vector<neighbor_structure> getNeighbors(solution s, Memory & m,Data &d)
+std::vector<neighbor_structure> getNeighbors(solution s,Data &d)
 {
 	std::vector<neighbor_structure> ans;
 	int length = s.get_length();
 	for (int i = 0; i < length; i++)
 	{
-		if (ans.size() == 400) break;
+		if (ans.size() > 400) break;
 		neighbor_structure temp_neighbor;
 		for (int j = i + 1; j < length; j++)
 		{
 			temp_neighbor.tour1 = i;
 			temp_neighbor.tour2 = j;
 			std::vector<int> nodelist = s.get_Tour(i).get_nodelist();
+			if (ans.size() > 400) break;
 			for (int k = 0; k < nodelist.size(); k++)
 			{
 				if (PickupOrDelivery(d.get_vertex_number(),nodelist[k])==pickup)
@@ -37,7 +38,6 @@ solution BigRemove(solution s,Data &d,Parameter &p)
 		std::vector<int> nodelist = change.get_nodelist();
 		for (int j=0;j<nodelist.size();j++)
 		{
-			puts("pick up small operator");
 			if (PickupOrDelivery(d.get_vertex_number(),nodelist[j]) == pickup)
 			{
 				Tour tChange = change;
@@ -65,7 +65,6 @@ solution BigRemove(solution s,Data &d,Parameter &p)
 			}
 			else
 			{
-				puts("move delivery");
 				Tour tChange = change;
 				double costChange = tChange.get_cost(p, d);
 				int correspondPickup = nodelist[j] - d.get_vertex_number() / 2;
@@ -111,7 +110,7 @@ bool tabulist_contains(std::vector<solution> &tabuList, solution &s)
 	return false;
 }
 
-void TabuSearch(solution s, Parameter p,Memory &m,Data &d)
+void TabuSearch(solution s, Parameter p,Data &d)
 {
 	int current_iterator = 0;
 	clock_t end, start;
@@ -125,21 +124,23 @@ void TabuSearch(solution s, Parameter p,Memory &m,Data &d)
 	const int max_tabu_size = 20;
 	start = end = clock();
 	int tabu_length = tabuList.size();
-	while (end - start < 2*60 * CLOCKS_PER_SEC)
+	while (end - start < 120*60 * CLOCKS_PER_SEC)
 	{
 		++current_iterator;
-		printf("iterator : %d\n", current_iterator);
-		if (current_iterator % p.get_ke() == 0) 
-		{ 
-			bestCandidate = BigRemove(bestCandidate, d, p); 
-			bestCandidate.update(p, d); 
-			printf("Big update completed. cost : %.4lf\n", bestCandidate.get_cost(p, d));
-		}
-		puts("small update");
-		std::vector<neighbor_structure> sNeighborhood = getNeighbors(bestCandidate, m, d);
+		printf("-------------------------------------iterator : %d----------------------------------------------\n", current_iterator);
+		//if (current_iterator % p.get_ke() == 0) 
+		//{ 
+		//	bestCandidate = BigRemove(bestCandidate, d, p); 
+		//	bestCandidate.update(p, d); 
+		//	printf("Big update completed. cost : %.4lf\n", bestCandidate.get_cost(p, d));
+		//}
+		std::vector<neighbor_structure> sNeighborhood = getNeighbors(bestCandidate, d);
 		solution tbCandidate = bestCandidate;
+		//int neighborCount = 0;
+		//printf("sNeighbor size : %d\n", sNeighborhood.size());
 		for (auto sCandidate_representation : sNeighborhood)
 		{
+			//printf("Neighbor %d\n", neighborCount++);
 			solution sCandidate = present_solution(bestCandidate,sCandidate_representation,p,d);
 			sCandidate.update(p, d);	
 			if ((not tabulist_contains(tabuList, sCandidate) and sCandidate.get_cost(p,d) < tbCandidate.get_cost(p,d)))
@@ -153,8 +154,16 @@ void TabuSearch(solution s, Parameter p,Memory &m,Data &d)
 		{
 			sBest = bestCandidate;
 			printf("update sBest,sBest cost = %.4lf\n",sBest.get_cost(p,d));
+			//sBest.checkFeasibility(d);
 		}
 		tabuList.push_back(bestCandidate);
+		if (tabuList.size() > 1000)
+		{
+			for (int i = 0; i < 500; i++)
+			{
+				tabuList.pop_back();
+			}
+		}
 		//if (tabuList.size() > tabu_length) { tabu_length = tabuList.size(); printf("tabu list length : %d\n", tabuList.size()); }
 		//tabuList.pop();
 		//p.update(sBest.get_feasibility());

@@ -33,4 +33,5 @@ public:
 	bool operator == (const Tour &t);
 	double hard_cost();
 	std::vector<int> get_nodelist();
+	void checkFeasibility(Data &d);
 };

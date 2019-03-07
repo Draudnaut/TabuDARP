@@ -22,4 +22,5 @@ public:
 	bool operator == (solution &s);
 	bool operator < (const solution &s) const;
 	double hard_cost();
+	void checkFeasibility(Data &d);
 };

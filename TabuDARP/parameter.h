@@ -3,10 +3,10 @@ class Parameter
 {
 private:
 	double alpha, beta, gamma, tao, delta,eta;
-	int ke;
+	int ke=5;
 public:
 	Parameter() {};
-	Parameter(double _alpha, double _beta, double _gamma, double _tao, double _delta, double _eta, int ke);
+	Parameter(double _alpha, double _beta, double _gamma, double _tao, double _delta, double _eta, int _ke);
 	Parameter(const Parameter &p);
 	double get_alpha();
 	double get_beta();

@@ -102,3 +102,11 @@ double solution::hard_cost()
 	return sum;
 }
 
+void solution::checkFeasibility(Data & d)
+{
+	for (int i = 0; i < length; i++)
+	{
+		tourlist[i].checkFeasibility(d);
+	}
+}
+
