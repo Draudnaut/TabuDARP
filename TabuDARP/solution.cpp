@@ -67,7 +67,7 @@ bool solution::operator==(solution & s)
 {
 	bool result = false;
 	if (s.length != length) return false;
-	if (s.cost != cost) return false;
+	if (fabs(cost-s.cost)>EPS) return false;
 	else
 	{
 		

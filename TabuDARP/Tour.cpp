@@ -77,7 +77,7 @@ void Tour::update(Data &d)
 		if (PickupOrDelivery(d.get_vertex_number(),nodelist[i]) == delivery) {
 			for (int j = 0; j < i; j++) {
 				if (nodelist[j] - nodelist[i] == d.get_vertex_number() / 2) {
-					if (arrive[j]-arrive[i]>d.get_ridetime()) {
+					if (arrive[j]-depart[i]>d.get_ridetime()) {
 						feasibility = false;
 						break;
 					}
@@ -166,7 +166,7 @@ double Tour::violation_ridetime(Data & p)
 			for (int j = 0; j < i; j++)
 			{
 				if (isCorrespondPD(p.get_vertex_number(), nodelist[i], nodelist[j])) {
-					double ridetime_real = arrive[i] - arrive[j];
+					double ridetime_real = arrive[i] - depart[j];
 					ans += std::max(0.0, ridetime_real - (double)p.get_ridetime());
 					break;
 				}
@@ -176,7 +176,7 @@ double Tour::violation_ridetime(Data & p)
 	return ans;
 }
 
-bool Tour::operator==(const Tour & t)
+bool Tour::operator==(const Tour & t) const
 {
 	if (len != t.len) return false;
 	bool result = true;
@@ -222,15 +222,15 @@ void Tour::checkFeasibility(Data &d)
 				{
 					if (arrive[j] - arrive[i] > d.get_ridetime())
 					{
-						printf("violation of ridetime");
+						printf("violation of ridetime\n");
 					}
 				}
 			}
 		}
 	}
 	/*duration feasibilty*/
-	if (distance[len-1]>d.get_capacity())
+	if (distance[len-1]-distance[0]>d.get_maximum_distance_vehicle())
 	{
-		printf("duration feasibility violation");
+		printf("duration feasibility violation\n");
 	}
 }

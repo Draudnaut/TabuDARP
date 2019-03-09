@@ -8,6 +8,10 @@
 #include "Memory.h"
 struct neighbor_structure
 {
+	/*
+	parameter meaning:
+	   from tour1 remove request to insert into tour 2
+	*/
 	int tour1;
 	int tour2;
 	int request;

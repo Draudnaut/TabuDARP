@@ -30,7 +30,7 @@ public:
 	double violation_duration(Data &p);
 	double violation_window(Data &p);
 	double violation_ridetime(Data &p);
-	bool operator == (const Tour &t);
+	bool operator == (const Tour &t) const;
 	double hard_cost();
 	std::vector<int> get_nodelist();
 	void checkFeasibility(Data &d);

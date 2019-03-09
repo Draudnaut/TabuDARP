@@ -103,7 +103,7 @@ solution BigRemove(solution s,Data &d,Parameter &p)
 
 bool tabulist_contains(std::vector<solution> &tabuList, solution &s)
 {
-	for (auto item : tabuList)
+	for (auto &item : tabuList)
 	{
 		if (s == item) return true;
 	}
@@ -114,6 +114,7 @@ void TabuSearch(solution s, Parameter p,Data &d)
 {
 	int current_iterator = 0;
 	clock_t end, start;
+	s.update(p, d);
 	solution sBest = s;
 	solution bestCandidate = s;
 	sBest.update(p, d);
@@ -128,24 +129,20 @@ void TabuSearch(solution s, Parameter p,Data &d)
 	{
 		++current_iterator;
 		printf("-------------------------------------iterator : %d----------------------------------------------\n", current_iterator);
-		//if (current_iterator % p.get_ke() == 0) 
-		//{ 
-		//	bestCandidate = BigRemove(bestCandidate, d, p); 
-		//	bestCandidate.update(p, d); 
-		//	printf("Big update completed. cost : %.4lf\n", bestCandidate.get_cost(p, d));
-		//}
+		if (current_iterator % p.get_ke() == 0) 
+		{ 
+			bestCandidate = BigRemove(bestCandidate, d, p); 
+			bestCandidate.update(p, d); 
+			printf("Big update completed. cost : %.4lf\n", bestCandidate.get_cost(p, d));
+		}
 		std::vector<neighbor_structure> sNeighborhood = getNeighbors(bestCandidate, d);
 		solution tbCandidate = bestCandidate;
-		//int neighborCount = 0;
-		//printf("sNeighbor size : %d\n", sNeighborhood.size());
 		for (auto sCandidate_representation : sNeighborhood)
 		{
-			//printf("Neighbor %d\n", neighborCount++);
 			solution sCandidate = present_solution(bestCandidate,sCandidate_representation,p,d);
-			sCandidate.update(p, d);	
-			if ((not tabulist_contains(tabuList, sCandidate) and sCandidate.get_cost(p,d) < tbCandidate.get_cost(p,d)))
+			sCandidate.update(p, d);
+			if ((tabulist_contains(tabuList, sCandidate)==false and sCandidate.get_cost(p,d) < tbCandidate.get_cost(p,d)))
 			{
-				//printf("update sCandidate , cost = %.4lf\n", sCandidate.get_cost(p,d));
 				tbCandidate = sCandidate;
 			}
 		}
@@ -154,32 +151,25 @@ void TabuSearch(solution s, Parameter p,Data &d)
 		{
 			sBest = bestCandidate;
 			printf("update sBest,sBest cost = %.4lf\n",sBest.get_cost(p,d));
-			//sBest.checkFeasibility(d);
 		}
 		tabuList.push_back(bestCandidate);
-		if (tabuList.size() > 1000)
+		if (tabuList.size() > 400)
 		{
-			for (int i = 0; i < 500; i++)
-			{
-				tabuList.pop_back();
-			}
+			tabuList.clear();
 		}
-		//if (tabuList.size() > tabu_length) { tabu_length = tabuList.size(); printf("tabu list length : %d\n", tabuList.size()); }
-		//tabuList.pop();
-		//p.update(sBest.get_feasibility());
 		if (current_iterator % 10 == 0) {
 			//checkpoint;
 			printf("--------------current solution-----------------\n");
 			if (sBest.get_feasibility() == false) {
 				printf("infeasible solution cost : %.4lf , hard_cost = %.4lf\n", sBest.get_cost(p,d),sBest.hard_cost());
 				printf("TabuList size : %d\n", tabuList.size());
+				sBest.checkFeasibility(d);
 			}
 			else {
 				printf("feasible solution cost : %.4lf\n", sBest.get_cost(p, d));
 			}
 		}
 		end = clock();
-		//printf("iter : %d\n", current_iterator);
 	}
 }
 

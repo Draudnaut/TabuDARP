@@ -12,6 +12,8 @@ namespace UnitTest1
 		TEST_METHOD(TestMethod1)
 		{
 			// TODO: Your test code here
+			solution s,s0;
+			Assert::AreEqual(s, s0);
 		}
 
 	};

@@ -17,6 +17,7 @@
 #include <cstring>
 #include <cmath>
 #include <ctime>
+#include <iostream>
 struct Point
 {
 	int id;
@@ -33,4 +34,5 @@ const int maxn = 1005;
 #define Tabu 2
 #define VNS 3
 #define PARA 4
+#define EPS 1e-7
 #endif //PCH_H
