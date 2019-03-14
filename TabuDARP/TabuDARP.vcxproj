@@ -164,6 +164,7 @@
     <ClInclude Include="localsearch.h" />
     <ClInclude Include="parameter.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="record_move.h" />
     <ClInclude Include="solution.h" />
     <ClInclude Include="tool.h" />
     <ClInclude Include="Tour.h" />
@@ -179,6 +180,7 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="record_move.cpp" />
     <ClCompile Include="solution.cpp" />
     <ClCompile Include="TabuDARP.cpp" />
     <ClCompile Include="tool.cpp" />

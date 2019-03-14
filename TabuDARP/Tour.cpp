@@ -58,6 +58,7 @@ int Tour::get_length()
 
 void Tour::update(Data &d)
 {
+	feasibility = true;
 	distance[0] = dis(d.get_point(0),d.get_point(nodelist[0]));
 	weight[0] = d.get_point(nodelist[0]).quality_good;
 	depart[0] = 0;
@@ -67,7 +68,7 @@ void Tour::update(Data &d)
 		weight[i] = weight[i - 1] + d.get_point(nodelist[i]).quality_good;
 		arrive[i] = depart[i - 1] + dis(d.get_point(nodelist[i-1]),d.get_point(nodelist[i]));
 		depart[i] = arrive[i] + 10;
-		if (distance[i] > d.get_capacity()) { feasibility = false;}
+		if (distance[i] > d.get_maximum_distance_vehicle()) { feasibility = false;}
 	}
 	distance[len] = distance[len - 1] + dis(d.get_point(0), d.get_point(nodelist[len - 1]));
 	arrive[len] = depart[len - 1] + dis(d.get_point(0), d.get_point(nodelist[len - 1]));
@@ -106,17 +107,17 @@ void Tour::delete_node(int node)
 			break;
 		}
 	}
-	for (int i = index + 1; i < len; i++)
+	for (int i = index; i < len-1; i++)
 	{
-		nodelist[i - 1] = nodelist[i];
+		nodelist[i] = nodelist[i+1];
 	}
 	len--;
 }
 
 void Tour::insert_node(int index, int node,Data &d)
 {
-	for (int i = len; i >= index; i--)
-		nodelist[i + 1] = nodelist[i];
+	for (int i = len; i > index; i--)
+		nodelist[i] = nodelist[i-1];
 	nodelist[index] = node;
 	len++;
 	update(d);
@@ -143,7 +144,7 @@ double Tour::violation_quality(Data &p)
 
 double Tour::violation_duration(Data & p)
 {
-	return std::max(0.0,distance[len-1]-(double)p.get_maximum_distance_vehicle());
+	return std::max(0.0,distance[len]-(double)p.get_maximum_distance_vehicle());
 }
 
 double Tour::violation_window(Data & p)
@@ -203,7 +204,10 @@ void Tour::checkFeasibility(Data &d)
 	for (int i = 0; i < len; i++)
 	{
 		if (arrive[i] > d.get_point(nodelist[i]).time_window_end)
+		{
 			printf("time window violation\n");
+			printf("Point %d , Time Window End : %d , Arrive at %.3lf\n", d.get_point(nodelist[i]).id, d.get_point(nodelist[i]).time_window_end, arrive[i]);
+		}
 	}
 	/*weight feasibility*/
 	for (int i = 0; i < len; i++)
@@ -220,7 +224,7 @@ void Tour::checkFeasibility(Data &d)
 			{
 				if (isCorrespondPD(d.get_vertex_number(), nodelist[i], nodelist[j]))
 				{
-					if (arrive[j] - arrive[i] > d.get_ridetime())
+					if (arrive[j] - depart[i] > d.get_ridetime())
 					{
 						printf("violation of ridetime\n");
 					}
@@ -229,7 +233,7 @@ void Tour::checkFeasibility(Data &d)
 		}
 	}
 	/*duration feasibilty*/
-	if (distance[len-1]-distance[0]>d.get_maximum_distance_vehicle())
+	if (distance[len]>d.get_maximum_distance_vehicle())
 	{
 		printf("duration feasibility violation\n");
 	}

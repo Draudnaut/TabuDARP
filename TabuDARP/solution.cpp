@@ -27,7 +27,7 @@ double solution::get_cost(Parameter &p, Data &d)
 	double sum = 0;
 	for (int i = 0; i < length; i++)
 	{
-		sum += tourlist[i].get_cost(p, d);
+		if (tourlist[i].get_length()>0) sum += tourlist[i].get_cost(p, d);
 	}
 	return sum;
 }
@@ -45,13 +45,17 @@ void solution::update(Parameter &p,Data &d)
 		3. update feasibility
 	*/
 	for (int i = 0; i < length; i++)
-		tourlist[i].update(d);
+		if (tourlist[i].get_length()>0) tourlist[i].update(d);
 	feasibility = false;
 	for (int i = 0; i < length; i++)
 		feasibility &= tourlist[i].get_feasibility();
 	cost = 0;
 	for (int i = 0; i < length; i++)
-		cost += tourlist[i].get_cost(p,d);
+	{
+		if (tourlist[i].get_length()>0) cost += tourlist[i].get_cost(p,d);
+		if (cost < 0) { int *num = NULL; *num; }
+	}
+		
 }
 
 void solution::output(const char * direction)
@@ -97,7 +101,7 @@ double solution::hard_cost()
 	double sum = 0;
 	for (int i = 0; i < length; i++)
 	{
-		sum += tourlist[i].hard_cost();
+		if (tourlist[i].get_length()>0) sum += tourlist[i].hard_cost();
 	}
 	return sum;
 }

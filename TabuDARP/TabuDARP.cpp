@@ -6,6 +6,7 @@
 #include "solution.h"
 #include "construct.h"
 #include "localsearch.h"
+#include "record_move.h"
 #include <iostream>
 #include <queue>
 #include <vector>
@@ -17,18 +18,28 @@ int count_request_route[maxn];
 
 int main(int argc,char* argv[])
 {
-	/*initialization components*/
+	/*initialization parameter*/
 	const char *path = "E:/dataset/data144_13.txt";
 	Data d(path);
+	Parameter p(1,1,1,1,0.5,10,7.5*log(d.get_vertex_number()/2),15);
 	solution s;
+	Record_move rm;
 	int search_function = Tabu;
-
-	if (search_function == Tabu) s = construct_Tabu(d);
-	else if (search_function == VNS) s = construct_VNS(d);
-	else s = construct_Para(d);
-	
-	Parameter p(1,1,1,1,0.5,10,5);
+	/*initialization*/
+	if (search_function == Tabu) 
+	{		
+		s = construct_Tabu(d,rm); 
+		
+	}
+	else if (search_function == VNS) 
+	{ 
+		s = construct_VNS(d); 
+	}
+	else 
+	{ 
+		s = construct_Para(d); 
+	}
 	/*Tabu Search components*/
-	TabuSearch(s, p, d);
+	TabuSearch(s, p, d,rm);
 	return 0;
 }

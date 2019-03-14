@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "construct.h"
 
-solution construct_Tabu(Data & d)
+solution construct_Tabu(Data & d,Record_move &rm)
 {
 	solution s;
 	int current_iterator = -1;
@@ -14,6 +14,7 @@ solution construct_Tabu(Data & d)
 		if (s.get_Tour(k).get_length() == 2) {
 			s.set_length(s.get_length() + 1);
 		}
+		rm.setRecord(i, k,0);
 	}
 	return s;
 }
