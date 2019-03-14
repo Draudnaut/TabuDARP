@@ -110,6 +110,7 @@ void solution::checkFeasibility(Data & d)
 {
 	for (int i = 0; i < length; i++)
 	{
+		printf("tour %d check feasibility.\n", i);
 		tourlist[i].checkFeasibility(d);
 	}
 }

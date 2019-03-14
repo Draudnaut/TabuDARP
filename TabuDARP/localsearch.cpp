@@ -8,12 +8,12 @@ std::vector<neighbor_structure> getNeighbors(solution s,Data &d,int iteration,Re
 	for (int i = 0; i < length; i++)
 	{
 		neighbor_structure temp_neighbor;
-		for (int j = i + 1; j < length; j++)
+		for (int j = 0; j < length; j++)
 		{
+			if (i == j) continue;
 			temp_neighbor.tour1 = i;
 			temp_neighbor.tour2 = j;
 			std::vector<int> nodelist = s.get_Tour(i).get_nodelist();
-			if (ans.size() > 400) break;
 			for (int k = 0; k < nodelist.size(); k++)
 			{
 				if (PickupOrDelivery(d.get_vertex_number(),nodelist[k])==pickup && rm.isOkToOperate(nodelist[k],i,iteration,p.get_theta()) && s.get_Tour(i).get_length()>0)
@@ -93,8 +93,15 @@ bool tabulist_contains(std::vector<solution> &tabuList, solution &s)
 	return false;
 }
 
-void TabuSearch(solution s, Parameter p,Data &d,Record_move &rm)
+void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm)
 {
+	FILE *f;
+	f = fopen("E:/output/Tabu_Result.txt", "w+");
+	if (f == NULL)
+	{
+		printf("file open failed.\n");
+		exit(-1);
+	}
 	int current_iterator = 0;
 	int find_feasible = -1;
 	clock_t end, start;
@@ -112,9 +119,10 @@ void TabuSearch(solution s, Parameter p,Data &d,Record_move &rm)
 	int tabu_length = tabuList.size();
 	//s.output("123");
 	//puts("--------------");
-	while (end - start < 120*60 * CLOCKS_PER_SEC)
+	while (end - start < 20*60 * CLOCKS_PER_SEC)
 	{
 		++current_iterator;
+		fprintf(f, "%d %.4lf\n", current_iterator, sBest.get_cost(p, d));
 		printf("-------------------------------------iterator : %d----------------------------------------------\n", current_iterator);
 		if (current_iterator % p.get_ke() == 0) 
 		{ 
@@ -125,6 +133,7 @@ void TabuSearch(solution s, Parameter p,Data &d,Record_move &rm)
 		std::vector<neighbor_structure> sNeighborhood = getNeighbors(bestCandidate, d,current_iterator,rm,p);
 		solution tbCandidate = bestCandidate;
 		neighbor_structure record_bestOperation;
+		//printf("vector neighborhood list size : %d.\n", sNeighborhood.size());
 		for (auto sCandidate_representation : sNeighborhood)
 		{
 			solution sCandidate = present_solution(bestCandidate,sCandidate_representation,p,d);
@@ -173,6 +182,7 @@ void TabuSearch(solution s, Parameter p,Data &d,Record_move &rm)
 		}
 		if (current_iterator % 5 == 0) {
 			//checkpoint;
+			sBest.update(p, d);
 			printf("--------------current solution-----------------\n");
 			if (sBest.get_feasibility() == false) {
 				printf("infeasible solution cost : %.4lf , hard_cost = %.4lf\n", sBest.get_cost(p,d),sBest.hard_cost());
@@ -192,7 +202,7 @@ void TabuSearch(solution s, Parameter p,Data &d,Record_move &rm)
 					sBest.get_Tour(11).get_length(),
 					sBest.get_Tour(12).get_length()
 					);
-				//sBest.checkFeasibility(d);
+				sBest.checkFeasibility(d);
 				//sBest.output("123");
 			}
 			else {
@@ -202,6 +212,7 @@ void TabuSearch(solution s, Parameter p,Data &d,Record_move &rm)
 		p.update(sBest.get_feasibility());
 		end = clock();
 	}
+	fclose(f);
 }
 
 void VariableNeighborSearch(solution s, Parameter p)
@@ -245,13 +256,16 @@ solution present_solution(solution Base, neighbor_structure change,Parameter &p,
 		}
 		tour2.delete_node(deliveryToInsert);
 	}
-	tour2.insert_node(indexDeliveryInsertTo,deliveryToInsert,d);
-	tour2.insert_node(indexPickupInsertTo, pickupToInsert, d);
-	tour1.update(d);
-	tour2.update(d);
-	//printf("after changed cost: \n\ttour1 : %.4lf\n\ttour2 : %.4lf\n", tour1.get_cost(p, d), tour2.get_cost(p, d));
-	Base.set_tourlist(tour1, change.tour1);
-	Base.set_tourlist(tour2, change.tour2);
-	Base.update(p, d);
+	if (indexDeliveryInsertTo != -1 and indexPickupInsertTo != -1)
+	{
+		tour2.insert_node(indexDeliveryInsertTo,deliveryToInsert,d);
+		tour2.insert_node(indexPickupInsertTo, pickupToInsert, d);
+		tour1.update(d);
+		tour2.update(d);
+		//printf("after changed cost: \n\ttour1 : %.4lf\n\ttour2 : %.4lf\n", tour1.get_cost(p, d), tour2.get_cost(p, d));
+		Base.set_tourlist(tour1, change.tour1);
+		Base.set_tourlist(tour2, change.tour2);
+		Base.update(p, d);
+	}
 	return Base;
 }

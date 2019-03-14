@@ -67,7 +67,7 @@ void Parameter::update(bool feasible)
 {
 	if (feasible)
 	{
-		printf("update feasible\n");
+		//printf("update feasible\n");
 		alpha /= (1 + delta);
 		beta /= (1 + delta);
 		gamma /= (1 + delta);
@@ -75,7 +75,7 @@ void Parameter::update(bool feasible)
 	}
 	else
 	{
-		printf("update infeasible\n");
+		//printf("update infeasible\n");
 		alpha *= (1 + delta);
 		beta *= (1 + delta);
 		gamma *= (1 + delta);

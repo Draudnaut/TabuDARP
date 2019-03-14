@@ -6,6 +6,8 @@
 #include <vector>
 #include <algorithm>
 #include "record_move.h"
+#include <cstdlib>
+#include <cstdio>
 struct neighbor_structure
 {
 	/*
