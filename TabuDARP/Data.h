@@ -6,6 +6,7 @@ private:
 	Point point[2005];
 	int vehicle_number, vertex_count, duration, capacity, ridetime;
 	char dataset[200];
+	std::set<std::pair<int, int>> infeasibleEdge;
 public:
 	Data(const char* path);
 	int get_vehicle_number() { return vehicle_number; };
@@ -14,4 +15,6 @@ public:
 	int get_capacity() { return capacity; };
 	int get_ridetime() { return ridetime; };
 	Point get_point(int index) { return point[index]; }
+	void insertInfeasibleEdge(int i, int j);
+	bool EdgeFeasiblity(int i, int j);
 };

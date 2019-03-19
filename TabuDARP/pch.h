@@ -18,6 +18,7 @@
 #include <cmath>
 #include <ctime>
 #include <iostream>
+#include <set>
 struct Point
 {
 	int id;
