@@ -46,7 +46,7 @@ void solution::update(Parameter &p,Data &d)
 	*/
 	for (int i = 0; i < length; i++)
 		if (tourlist[i].get_length()>0) tourlist[i].update(d);
-	feasibility = false;
+	feasibility = true;
 	for (int i = 0; i < length; i++)
 		feasibility &= tourlist[i].get_feasibility();
 	cost = 0;

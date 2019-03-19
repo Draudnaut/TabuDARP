@@ -119,7 +119,7 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm)
 	int tabu_length = tabuList.size();
 	//s.output("123");
 	//puts("--------------");
-	while (end - start < 20*60 * CLOCKS_PER_SEC)
+	while (end - start < 60*60 * CLOCKS_PER_SEC)
 	{
 		++current_iterator;
 		fprintf(f, "%d %.4lf\n", current_iterator, sBest.get_cost(p, d));
@@ -150,7 +150,7 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm)
 			}
 			if (sCandidate.get_feasibility() == true)
 			{
-				printf("find a feasible solution\n");
+				//printf("find a feasible solution\n");
 				if (find_feasible == -1)
 				{
 					find_feasible = 1;
