@@ -8,6 +8,12 @@
 #include "record_move.h"
 #include <cstdlib>
 #include <cstdio>
+#include <mutex>
+#include <thread>
+struct TourBlock
+{
+	std::vector<Tour> Tourset;
+};
 struct neighbor_structure
 {
 	/*

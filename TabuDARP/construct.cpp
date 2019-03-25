@@ -5,7 +5,7 @@ solution construct_Tabu(Data & d,Record_move &rm)
 {
 	solution s;
 	int current_iterator = -1;
-	for (int i = 1; i < d.get_vertex_number()/2; i++)
+	for (int i = 1; i <= d.get_vertex_number()/2; i++)
 	{
 		++current_iterator;
 		int k = rand() % d.get_vehicle_number();

@@ -112,14 +112,11 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm)
 	sBest.update(p, d);
 	bestCandidate.update(p, d);
 	static std::vector<solution> tabuList;
-	//tabuList.reserve(1000);
 	tabuList.push_back(sBest);
 	const int max_tabu_size = 20;
 	start = end = clock();
 	int tabu_length = tabuList.size();
-	//s.output("123");
-	//puts("--------------");
-	while (end - start < 60*60 * CLOCKS_PER_SEC)
+	while (end - start < 10*60 * CLOCKS_PER_SEC)
 	{
 		++current_iterator;
 		fprintf(f, "%d %.4lf\n", current_iterator, sBest.get_cost(p, d));
@@ -133,30 +130,24 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm)
 		std::vector<neighbor_structure> sNeighborhood = getNeighbors(bestCandidate, d,current_iterator,rm,p);
 		solution tbCandidate = bestCandidate;
 		neighbor_structure record_bestOperation;
-		//printf("vector neighborhood list size : %d.\n", sNeighborhood.size());
 		for (auto sCandidate_representation : sNeighborhood)
 		{
 			solution sCandidate = present_solution(bestCandidate,sCandidate_representation,p,d);
 			sCandidate.update(p, d);
 			if ((tabulist_contains(tabuList, sCandidate)==false and sCandidate.get_cost(p,d) < tbCandidate.get_cost(p,d)))
 			{
-				//puts("solution update");
 				tbCandidate = sCandidate;
-				//tbCandidate.get_Tour(sCandidate_representation.tour1).output();
-				//puts("");
-				//tbCandidate.get_Tour(sCandidate_representation.tour2).output();
-				//puts("");
 				record_bestOperation = sCandidate_representation;
 			}
 			if (sCandidate.get_feasibility() == true)
 			{
-				//printf("find a feasible solution\n");
 				if (find_feasible == -1)
 				{
 					find_feasible = 1;
 					feasibleSolution = sCandidate;
 				}
-				else {
+				else 
+				{
 					if (feasibleSolution.get_cost(p, d) > sCandidate.get_cost(p, d))
 					{
 						feasibleSolution = sCandidate;
@@ -186,27 +177,10 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm)
 			printf("--------------current solution-----------------\n");
 			if (sBest.get_feasibility() == false) {
 				printf("infeasible solution cost : %.4lf , hard_cost = %.4lf\n", sBest.get_cost(p,d),sBest.hard_cost());
-				printf("TabuList size : %d\n", tabuList.size());
-				printf("sBest tourlist every len : [%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d,%d].\n",
-					sBest.get_Tour(0).get_length(),
-					sBest.get_Tour(1).get_length(),
-					sBest.get_Tour(2).get_length(),
-					sBest.get_Tour(3).get_length(),
-					sBest.get_Tour(4).get_length(),
-					sBest.get_Tour(5).get_length(),
-					sBest.get_Tour(6).get_length(),
-					sBest.get_Tour(7).get_length(),
-					sBest.get_Tour(8).get_length(),
-					sBest.get_Tour(9).get_length(),
-					sBest.get_Tour(10).get_length(),
-					sBest.get_Tour(11).get_length(),
-					sBest.get_Tour(12).get_length()
-					);
-				sBest.checkFeasibility(d);
-				//sBest.output("123");
 			}
 			else {
 				printf("feasible solution cost : %.4lf\n", sBest.get_cost(p, d));
+				sBest.output("123");
 			}
 		}
 		p.update(sBest.get_feasibility());
