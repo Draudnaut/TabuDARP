@@ -31,3 +31,5 @@ void TabuSearch(solution s, Parameter p,Data &d,Record_move &rm);
 void VariableNeighborSearch(solution s, Parameter p);
 void paraNeighborSearch(solution s, Parameter p);
 solution present_solution(solution Base, neighbor_structure change, Parameter &p, Data &d);
+double paraTabuBlocks(TourBlock &s);
+void paraTabuSearch(solution s, Parameter p, Data &d, Record_move &rm);

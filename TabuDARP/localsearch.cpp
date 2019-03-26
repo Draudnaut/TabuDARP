@@ -243,3 +243,7 @@ solution present_solution(solution Base, neighbor_structure change,Parameter &p,
 	}
 	return Base;
 }
+
+void paraTabuSearch(solution s, Parameter p, Data & d, Record_move & rm)
+{
+}

@@ -5,6 +5,7 @@
 #include "Tour.h"
 #include "solution.h"
 #include "tool.h"
+#include <algorithm>
 solution construct_Tabu(Data &d,Record_move &rm);
 solution construct_VNS(Data &d);
 solution construct_Para(Data &d);

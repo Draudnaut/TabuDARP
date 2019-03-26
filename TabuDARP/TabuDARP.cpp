@@ -19,7 +19,7 @@ int count_request_route[maxn];
 int main(int argc,char* argv[])
 {
 	/*initialization parameter*/
-	const char *path = "E:/dataset/data144_13.txt";
+	const char *path = "E:/dataset/R6b.txt";
 	Data d(path);
 	Parameter p(1,1,1,1,0.5,10,7.5*log(d.get_vertex_number()/2),15);
 	solution s;

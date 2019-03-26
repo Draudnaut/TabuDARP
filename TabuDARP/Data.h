@@ -17,4 +17,5 @@ public:
 	Point get_point(int index) { return point[index]; }
 	void insertInfeasibleEdge(int i, int j);
 	bool EdgeFeasiblity(int i, int j);
+	std::vector<Point> pointArray();
 };

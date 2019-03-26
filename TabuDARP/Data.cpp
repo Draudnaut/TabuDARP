@@ -28,3 +28,8 @@ bool Data::EdgeFeasiblity(int i, int j)
 	if (infeasibleEdge.find(std::make_pair(i, j)) != infeasibleEdge.end()) return true;
 	else return false;
 }
+
+std::vector<Point> Data::pointArray()
+{
+	return std::vector<Point>(point,point+vertex_count);
+}

@@ -21,7 +21,16 @@ solution construct_Tabu(Data & d,Record_move &rm)
 
 solution construct_VNS(Data & d)
 {
-	return solution();
+	std::vector<Point> PointArray = d.pointArray();
+	std::sort(PointArray.begin(), PointArray.end(), cmp_vns);
+	solution s;
+	s.set_length(d.get_vehicle_number());
+	for (int i = 0; i < d.get_vehicle_number(); i++)
+	{
+		s.get_Tour(i).set_node(0, PointArray[i].id);
+	}
+
+	return s;
 }
 
 solution construct_Para(Data & d)

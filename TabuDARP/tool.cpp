@@ -23,3 +23,8 @@ bool isCorrespondPD(int vertex_count,int x, int y)
 	if (abs(x - y) == vertex_count / 2) return true;
 	else return false;
 }
+
+int cmp_vns(Point a, Point b)
+{
+	return a.time_window_start < b.time_window_start;
+}
