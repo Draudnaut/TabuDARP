@@ -27,6 +27,44 @@ std::vector<neighbor_structure> getNeighbors(solution s,Data &d,int iteration,Re
 	return ans;
 }
 
+std::vector<neighbor_structure> getNeighbors_ex(solution s, Data & d, int iteration, Record_move & rm, Parameter & p)
+{
+	std::vector<std::pair<int,Tour>> tourList;
+	for (int i = 0; i < s.get_length(); i++)
+	{
+		tourList.push_back(std::make_pair(i,s.get_Tour(i)));
+	}
+	std::sort(tourList.begin(), 
+			tourList.end(), 
+			[&](std::pair<int, Tour> &p1, std::pair<int, Tour> &p2)->int 
+			{
+				return p1.second.get_cost(p, d) < p2.second.get_cost(p, d); 
+			}
+	);
+	int tourid1 = tourList.begin()->first;
+	int tourid2 = (tourList.end()-1)->first;
+	std::vector<int> nodelistTour1(tourList[0].second.get_nodelist()), 
+					 nodelistTour2((tourList.end()-1)->second.get_nodelist());
+	std::vector<neighbor_structure> neighbors;
+	std::vector<int> requestlistTour1;
+	for (auto node : nodelistTour1)
+	{
+		if (PickupOrDelivery(d.get_vertex_number(), node) == pickup)
+		{
+			requestlistTour1.push_back(node);
+		}
+	}
+	neighbor_structure nei;
+	nei.tour1 = tourid1;
+	nei.tour2 = tourid2;
+	for (auto request : requestlistTour1)
+	{
+		nei.request = request;
+		neighbors.push_back(nei);
+	}
+	return neighbors;
+}
+
 solution BigRemove(solution s,Data &d,Parameter &p)
 {
 	puts("Big operator");
