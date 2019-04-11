@@ -38,9 +38,14 @@ std::vector<neighbor_structure> getNeighbors_ex(solution s, Data & d, int iterat
 			tourList.end(), 
 			[&](std::pair<int, Tour> &p1, std::pair<int, Tour> &p2)->int 
 			{
-				return p1.second.get_cost(p, d) < p2.second.get_cost(p, d); 
+				return p1.second.get_cost(p, d) > p2.second.get_cost(p, d); 
 			}
 	);
+	/*checkPoint
+	for (auto Candidate : tourList)
+	{
+		printf("tour id : %d , cost : %.4lf\n", Candidate.first, Candidate.second.get_cost(p, d));
+	}*/
 	int tourid1 = tourList.begin()->first;
 	int tourid2 = (tourList.end()-1)->first;
 	std::vector<int> nodelistTour1(tourList[0].second.get_nodelist()), 
@@ -131,7 +136,7 @@ bool tabulist_contains(std::vector<solution> &tabuList, solution &s)
 	return false;
 }
 
-void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm)
+void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm,int indicator)
 {
 	FILE *f;
 	f = fopen("E:/output/Tabu_Result.txt", "w+");
@@ -154,22 +159,26 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm)
 	const int max_tabu_size = 20;
 	start = end = clock();
 	int tabu_length = tabuList.size();
-	while (end - start < 10*60 * CLOCKS_PER_SEC)
+	int countEvaluation = 0;
+	while (end - start < 30*60 * CLOCKS_PER_SEC)
 	{
 		++current_iterator;
-		fprintf(f, "%d %.4lf\n", current_iterator, sBest.get_cost(p, d));
-		printf("-------------------------------------iterator : %d----------------------------------------------\n", current_iterator);
+		fprintf(f, "%d %.4lf\n", countEvaluation, sBest.get_cost(p, d));
 		if (current_iterator % p.get_ke() == 0) 
 		{ 
 			bestCandidate = BigRemove(bestCandidate, d, p); 
 			bestCandidate.update(p, d); 
 			printf("Big update completed. cost : %.4lf\n", bestCandidate.get_cost(p, d));
+			if (bestCandidate.get_feasibility() == true) find_feasible = 1,printf("find feasible. Evaluation %d\n", countEvaluation);
 		}
-		std::vector<neighbor_structure> sNeighborhood = getNeighbors(bestCandidate, d,current_iterator,rm,p);
+		std::vector<neighbor_structure> sNeighborhood;
+		if (indicator == 1) sNeighborhood = getNeighbors_ex(bestCandidate, d,current_iterator,rm,p);
+		else sNeighborhood = getNeighbors(bestCandidate, d, current_iterator, rm, p);
 		solution tbCandidate = bestCandidate;
 		neighbor_structure record_bestOperation;
 		for (auto sCandidate_representation : sNeighborhood)
 		{
+			countEvaluation++;
 			solution sCandidate = present_solution(bestCandidate,sCandidate_representation,p,d);
 			sCandidate.update(p, d);
 			if ((tabulist_contains(tabuList, sCandidate)==false and sCandidate.get_cost(p,d) < tbCandidate.get_cost(p,d)))
@@ -183,6 +192,7 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm)
 				{
 					find_feasible = 1;
 					feasibleSolution = sCandidate;
+					printf("find feasible. Evaluation %d\n", countEvaluation);
 				}
 				else 
 				{
@@ -200,7 +210,7 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm)
 		if (bestCandidate.get_cost(p,d) < sBest.get_cost(p,d))
 		{
 			sBest = bestCandidate;
-			printf("update sBest,sBest cost = %.4lf\n",sBest.get_cost(p,d));
+			printf("Evaluation %d ,update sBest,sBest cost = %.4lf\n",countEvaluation,sBest.get_cost(p,d));
 			rm.setRecord(record_bestOperation.request, record_bestOperation.tour1, current_iterator);
 			
 		}
@@ -209,10 +219,10 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm)
 		{
 			tabuList.clear();
 		}
-		if (current_iterator % 5 == 0) {
+		if (countEvaluation % 1000 == 0) {
 			//checkpoint;
 			sBest.update(p, d);
-			printf("--------------current solution-----------------\n");
+			printf("count on evaluation : %d\n",countEvaluation);
 			if (sBest.get_feasibility() == false) {
 				printf("infeasible solution cost : %.4lf , hard_cost = %.4lf\n", sBest.get_cost(p,d),sBest.hard_cost());
 			}

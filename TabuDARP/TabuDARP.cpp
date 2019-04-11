@@ -24,7 +24,7 @@ int main(int argc,char* argv[])
 	Parameter p(1,1,1,1,0.5,10,7.5*log(d.get_vertex_number()/2),15);
 	solution s;
 	Record_move rm;
-	int search_function = Tabu;
+	int search_function = VNS;
 	/*initialization*/
 	if (search_function == Tabu) 
 	{		
@@ -33,14 +33,17 @@ int main(int argc,char* argv[])
 	}
 	else if (search_function == VNS) 
 	{ 
-		s = construct_VNS(d); 
+		d.pruning();
+		//s = construct_VNS(d); 
+		d.printTimeWindow();
+		printf("size : %d\n", d.sizeOfinfeasibleSet());
 	}
 	else 
 	{ 
 		s = construct_Para(d); 
 	}
 	/*Tabu Search components*/
-	if(search_function==Tabu) TabuSearch(s, p, d,rm);
+	if(search_function==Tabu) TabuSearch(s, p, d,rm,1);
 	else if (search_function == VNS) VariableNeighborSearch(s, p);
 	else paraNeighborSearch(s, p);
 	return 0;

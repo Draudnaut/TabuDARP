@@ -25,8 +25,8 @@ struct Point
 	double x, y;
 	int service_time;
 	int quality_good;
-	int time_window_start;
-	int time_window_end;
+	double time_window_start;
+	double time_window_end;
 };
 const int maxn = 1005;
 #define pickup 0
