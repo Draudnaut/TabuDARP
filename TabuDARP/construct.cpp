@@ -36,7 +36,25 @@ solution construct_VNS(Data & d)
 	}
 	while (index < requestArray.size())
 	{
-		
+		/*choose one criterion and judge to move*/
+		int k = rand() % 4;
+		int tour_insert = -1;
+		if (k == 1) 
+		{
+
+		}
+		else if (k == 2)
+		{
+
+		}
+		else if (k == 3)
+		{
+
+		}
+		else
+		{
+
+		}
 		index++;
 	}
 	return s;
@@ -47,22 +65,33 @@ solution construct_Para(Data & d)
 	return solution();
 }
 
-double vnsCriterion1(Tour & t, Point a)
+double vnsCriterion1(Tour & t, Point a,Data &d)
 {
-	return 0.0;
+	/*origin origin*/
+	std::vector<int> nodelist = t.get_nodelist();
+	int lastPickup = *(nodelist.end() - 2);
+	double ans = dis(d.get_point(lastPickup), a);
+	return ans;
 }
 
-double vnsCriterion2(Tour & t, Point a)
+double vnsCriterion2(Tour & t, Point a,Data &d)
 {
-	return 0.0;
+	/*origin destination*/
+	std::vector<int> nodelist = t.get_nodelist();
+	int lastpickup = *(nodelist.end() - 2);
+	return dis(d.get_point(lastpickup),a);
 }
 
-double vnsCriterion3(Tour & t, Point a)
+double vnsCriterion3(Tour & t, Point a,Data &d)
 {
-	return 0.0;
+	std::vector<int> nodelist = t.get_nodelist();
+	int lastDelivery = *(nodelist.end() - 1);
+	return dis(d.get_point(lastDelivery),a);
 }
 
-double vnsCriterion4(Tour & t, Point a)
+double vnsCriterion4(Tour & t, Point a,Data &d)
 {
-	return 0.0;
+	std::vector<int> nodelist = t.get_nodelist();
+	int lastDelivery = *(nodelist.end() - 1);
+	return dis(d.get_point(lastDelivery),a);
 }

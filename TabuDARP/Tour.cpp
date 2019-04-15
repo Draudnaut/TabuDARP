@@ -206,7 +206,7 @@ void Tour::checkFeasibility(Data &d)
 		if (arrive[i] > d.get_point(nodelist[i]).time_window_end)
 		{
 			printf("time window violation\n");
-			printf("Point %d , Time Window End : %d , Arrive at %.3lf\n", d.get_point(nodelist[i]).id, d.get_point(nodelist[i]).time_window_end, arrive[i]);
+			printf("Point %d , Time Window End : %.3lf , Arrive at %.3lf\n", d.get_point(nodelist[i]).id, d.get_point(nodelist[i]).time_window_end, arrive[i]);
 		}
 	}
 	/*weight feasibility*/
