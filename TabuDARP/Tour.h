@@ -5,6 +5,7 @@
 #include "parameter.h"
 #include "tool.h"
 #include "vector"
+
 class Tour
 {
 private:
@@ -35,3 +36,5 @@ public:
 	std::vector<int> get_nodelist();
 	void checkFeasibility(Data &d);
 };
+
+

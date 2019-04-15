@@ -22,14 +22,23 @@ solution construct_Tabu(Data & d,Record_move &rm)
 solution construct_VNS(Data & d)
 {
 	std::vector<Point> PointArray = d.pointArray();
+	std::vector<Point> requestArray(PointArray.begin()+1, PointArray.begin() + (PointArray.size() / 2));
 	std::sort(PointArray.begin(), PointArray.end(), cmp_vns);
 	solution s;
 	s.set_length(d.get_vehicle_number());
-	for (int i = 0; i < d.get_vehicle_number(); i++)
+	int vehicle_number = d.get_vehicle_number();
+	int index = 0;
+	for (int i = 0; i < vehicle_number; i++)
 	{
-		s.get_Tour(i).set_node(0, PointArray[i].id);
+		s.get_Tour(i).insert_node(s.get_Tour(i).get_length(), requestArray[index].id, d);
+		s.get_Tour(i).insert_node(s.get_Tour(i).get_length(), requestArray[index].id + (d.get_vertex_number() / 2), d);
+		index++;
 	}
-
+	while (index < requestArray.size())
+	{
+		
+		index++;
+	}
 	return s;
 }
 
@@ -38,5 +47,22 @@ solution construct_Para(Data & d)
 	return solution();
 }
 
+double vnsCriterion1(Tour & t, Point a)
+{
+	return 0.0;
+}
 
+double vnsCriterion2(Tour & t, Point a)
+{
+	return 0.0;
+}
 
+double vnsCriterion3(Tour & t, Point a)
+{
+	return 0.0;
+}
+
+double vnsCriterion4(Tour & t, Point a)
+{
+	return 0.0;
+}

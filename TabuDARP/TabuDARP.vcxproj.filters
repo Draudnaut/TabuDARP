@@ -21,9 +21,6 @@
     <ClInclude Include="solution.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Tour.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Data.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -40,6 +37,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="record_move.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Tour.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -34,7 +34,7 @@ int main(int argc,char* argv[])
 	else if (search_function == VNS) 
 	{ 
 		d.pruning();
-		//s = construct_VNS(d); 
+		s = construct_VNS(d); 
 		d.printTimeWindow();
 		printf("size : %d\n", d.sizeOfinfeasibleSet());
 	}

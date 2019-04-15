@@ -28,3 +28,4 @@ int cmp_vns(Point a, Point b)
 {
 	return a.time_window_start < b.time_window_start;
 }
+
