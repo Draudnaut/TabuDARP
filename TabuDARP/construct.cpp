@@ -39,22 +39,57 @@ solution construct_VNS(Data & d)
 		/*choose one criterion and judge to move*/
 		int k = rand() % 4;
 		int tour_insert = -1;
-		if (k == 1) 
+		double maxCost = 9999999999;
+		if (k == 0) 
 		{
-
+			for (int i = 0; i < vehicle_number; i++)
+			{
+				double dist = vnsCriterion1(s.get_Tour(i), requestArray[index], d);
+				if (dist < maxCost)
+				{
+					tour_insert = i;
+					maxCost = dist;
+				}
+			}
+		}
+		else if (k == 1)
+		{
+			for (int i = 0; i < vehicle_number; i++)
+			{
+				double dist = vnsCriterion2(s.get_Tour(i), d.get_point(requestArray[index].id + d.get_vertex_number() / 2), d);
+				if (dist < maxCost)
+				{
+					tour_insert = i;
+					maxCost = dist;
+				}
+			}
 		}
 		else if (k == 2)
 		{
-
-		}
-		else if (k == 3)
-		{
-
+			for (int i = 0; i < vehicle_number; i++)
+			{
+				double dist = vnsCriterion3(s.get_Tour(i), requestArray[index], d);
+				if (dist < maxCost)
+				{
+					tour_insert = i;
+					maxCost = dist;
+				}
+			}
 		}
 		else
 		{
-
+			for (int i = 0; i < vehicle_number; i++)
+			{
+				double dist = vnsCriterion4(s.get_Tour(i), d.get_point(requestArray[index].id + d.get_vertex_number() / 2), d);
+				if (dist < maxCost)
+				{
+					tour_insert = i;
+					maxCost = dist;
+				}
+			}
 		}
+		s.get_Tour(tour_insert).insert_node(s.get_Tour(tour_insert).get_length(), requestArray[index].id, d);
+		s.get_Tour(tour_insert).insert_node(s.get_Tour(tour_insert).get_length(), requestArray[index].id + d.get_vertex_number(), d);
 		index++;
 	}
 	return s;
