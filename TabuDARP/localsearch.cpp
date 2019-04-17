@@ -237,8 +237,16 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm,int indicator)
 	fclose(f);
 }
 
-void VariableNeighborSearch(solution s, Parameter p)
+void VariableNeighborSearch(solution s, Parameter p, Data &d)
 {
+	int neighboring_k = 1;
+	clock_t start, end;
+	start = end = clock();
+	while (end - start < 60 * CLOCKS_PER_SEC)
+	{
+
+	}
+
 }
 
 void paraNeighborSearch(solution s, Parameter p)

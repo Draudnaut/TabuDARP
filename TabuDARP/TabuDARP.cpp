@@ -34,9 +34,8 @@ int main(int argc,char* argv[])
 	else if (search_function == VNS) 
 	{ 
 		d.pruning();
-		s = construct_VNS(d); 
 		d.printTimeWindow();
-		printf("size : %d\n", d.sizeOfinfeasibleSet());
+		s = construct_VNS(d); 
 	}
 	else 
 	{ 
@@ -44,7 +43,7 @@ int main(int argc,char* argv[])
 	}
 	/*Tabu Search components*/
 	if(search_function==Tabu) TabuSearch(s, p, d,rm,1);
-	else if (search_function == VNS) VariableNeighborSearch(s, p);
+	else if (search_function == VNS) VariableNeighborSearch(s, p, d);
 	else paraNeighborSearch(s, p);
 	return 0;
 }

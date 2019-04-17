@@ -23,7 +23,7 @@ solution construct_VNS(Data & d)
 {
 	std::vector<Point> PointArray = d.pointArray();
 	std::vector<Point> requestArray(PointArray.begin()+1, PointArray.begin() + (PointArray.size() / 2));
-	std::sort(PointArray.begin(), PointArray.end(), cmp_vns);
+	std::sort(requestArray.begin(), requestArray.end(), cmp_vns);
 	solution s;
 	s.set_length(d.get_vehicle_number());
 	int vehicle_number = d.get_vehicle_number();
@@ -89,7 +89,7 @@ solution construct_VNS(Data & d)
 			}
 		}
 		s.get_Tour(tour_insert).insert_node(s.get_Tour(tour_insert).get_length(), requestArray[index].id, d);
-		s.get_Tour(tour_insert).insert_node(s.get_Tour(tour_insert).get_length(), requestArray[index].id + d.get_vertex_number(), d);
+		s.get_Tour(tour_insert).insert_node(s.get_Tour(tour_insert).get_length(), requestArray[index].id + d.get_vertex_number()/2, d);
 		index++;
 	}
 	return s;
