@@ -10,6 +10,7 @@
 #include <cstdio>
 #include <mutex>
 #include <thread>
+#include <random>
 struct TourBlock
 {
 	std::vector<Tour> Tourset;

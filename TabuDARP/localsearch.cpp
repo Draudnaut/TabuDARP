@@ -303,3 +303,16 @@ solution present_solution(solution Base, neighbor_structure change,Parameter &p,
 void paraTabuSearch(solution s, Parameter p, Data & d, Record_move & rm)
 {
 }
+
+std::vector<vnsSwapNeighborhoodStructure> getSwapNeighbor(solution s)
+{
+	std::vector<vnsSwapNeighborhoodStructure> ans;
+	int len = s.get_length();
+	
+	int touri = rand() % len;
+	int tourj = rand() % len;
+	while (tourj == touri) tourj = rand() % len;
+
+
+	return ans;
+}
