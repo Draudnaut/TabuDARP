@@ -304,9 +304,8 @@ void paraTabuSearch(solution s, Parameter p, Data & d, Record_move & rm)
 {
 }
 
-std::vector<vnsSwapNeighborhoodStructure> getSwapNeighbor(solution s)
+solution getSwapNeighbor(solution s)
 {
-	std::vector<vnsSwapNeighborhoodStructure> ans;
 	int len = s.get_length();
 	
 	int touri = rand() % len;
@@ -314,5 +313,4 @@ std::vector<vnsSwapNeighborhoodStructure> getSwapNeighbor(solution s)
 	while (tourj == touri) tourj = rand() % len;
 
 
-	return ans;
 }
