@@ -34,7 +34,7 @@ void VariableNeighborSearch(solution s, Parameter p,Data &d);
 void paraNeighborSearch(solution s, Parameter p);
 solution present_solution(solution Base, neighbor_structure change, Parameter &p, Data &d);
 void paraTabuSearch(solution s, Parameter p, Data &d, Record_move &rm);
-solution getSwapNeighbor(solution s);
+solution getSwapNeighbor(solution s,Data &d);
 solution getSwapNeighbor_ex(solution s);
 solution getChainNeighbor(solution s);
 solution getChainNeighbor_ex(solution s);

@@ -304,13 +304,75 @@ void paraTabuSearch(solution s, Parameter p, Data & d, Record_move & rm)
 {
 }
 
-solution getSwapNeighbor(solution s)
+solution getSwapNeighbor(solution s,Data &d)
 {
 	int len = s.get_length();
-	
 	int touri = rand() % len;
 	int tourj = rand() % len;
 	while (tourj == touri) tourj = rand() % len;
-
-
+	int length_tour1 = s.get_Tour(touri).get_length();
+	int length_tour2 = s.get_Tour(tourj).get_length();
+	/*choose sequence index from Tour1 and tour2*/
+	int index_tour1_begin, index_tour1_end, index_tour2_begin, index_tour2_end;
+	index_tour1_begin = rand() % length_tour1;
+	index_tour1_end = rand() % length_tour1;
+	while (index_tour1_end <= index_tour1_begin) index_tour1_end = rand() % length_tour2;
+	index_tour2_begin = rand() % length_tour2;
+	index_tour2_end = rand() % length_tour2;
+	while (index_tour2_end <= index_tour2_begin) index_tour2_end = rand() % length_tour2;
+	std::vector<int> requestTour1, requestTour2;
+	/*get request sequence*/
+	while (index_tour1_begin <= index_tour1_end)
+	{
+		int node = s.get_Tour(touri).get_node(index_tour1_begin);
+		int flag = 0;
+		for (auto nodeExist : requestTour1)
+		{
+			if (node == nodeExist or isCorrespondPD(d.get_vertex_number(), node, nodeExist))
+			{
+				flag = 1;
+			}
+		}
+		if (flag == 0)
+		{
+			if (PickupOrDelivery(d.get_vertex_number(), node) == pickup)
+			{
+				requestTour1.push_back(node);
+			}
+			else
+			{
+				requestTour1.push_back(node - d.get_vertex_number() / 2);
+			}
+		}
+		index_tour1_begin++;
+	}
+	while (index_tour2_begin <= index_tour2_end)
+	{
+		int node = s.get_Tour(touri).get_node(index_tour2_begin);
+		int flag = 0;
+		for (auto nodeExist : requestTour2)
+		{
+			if (node == nodeExist or isCorrespondPD(d.get_vertex_number(), node, nodeExist))
+			{
+				flag = 1;
+			}
+		}
+		if (flag == 0)
+		{
+			if (PickupOrDelivery(d.get_vertex_number(), node) == pickup)
+			{
+				requestTour2.push_back(node);
+			}
+			else
+			{
+				requestTour2.push_back(node - d.get_vertex_number() / 2);
+			}
+		}
+	}
+	/*delete request sequence*/
+	/*
+	   reinsert request
+	   sequence1 to tour2
+	   sequence2 to tour1
+	*/
 }

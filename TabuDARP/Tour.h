@@ -35,6 +35,7 @@ public:
 	double hard_cost();
 	std::vector<int> get_nodelist();
 	void checkFeasibility(Data &d);
+	int get_node(int index) { return nodelist[index]; }
 };
 
 
