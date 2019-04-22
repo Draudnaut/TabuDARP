@@ -237,16 +237,43 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm,int indicator)
 	fclose(f);
 }
 
-void VariableNeighborSearch(solution s, Parameter p, Data &d)
+void VariableNeighborSearch(solution s, Parameter p, Data &d,int indicate)
 {
 	int neighboring_k = 1;
 	clock_t start, end;
 	start = end = clock();
+	solution sBest = s;
 	while (end - start < 60 * CLOCKS_PER_SEC)
 	{
-
+		// shaking
+		solution s_ = shake(s, neighboring_k);
+		//local search
+		double prand = ((double)rand() / RAND_MAX);
+		solution s__;
+		if (s_.hard_cost() < 1.02*s.hard_cost() or prand < 0.01) {
+			s__ = vnsLocalSearch(s_);
+		}
+		else
+		{
+			s__ = s;
+		}
+		//move or not
+		if (s__.get_cost(p, d) < s.get_cost(p, d))
+		{
+			if (s__.hard_cost() >= 1.05*s.hard_cost())
+			{
+				s__ = vnsLocalSearch(s__);
+			}
+			s = s__;
+			neighboring_k = 0;
+		}
+		if (s__.get_feasibility() == true and s__.get_cost(p, d) < sBest.get_cost(p, d))
+		{
+			sBest = s__;
+		}
+		//modify k
+		neighboring_k = (neighboring_k % 13) + 1;
 	}
-
 }
 
 void paraNeighborSearch(solution s, Parameter p)
