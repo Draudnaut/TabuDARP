@@ -36,7 +36,7 @@ solution present_solution(solution Base, neighbor_structure change, Parameter &p
 void paraTabuSearch(solution s, Parameter p, Data &d, Record_move &rm);
 solution getSwapNeighbor(solution s,Data &d);
 solution getSwapNeighbor_ex(solution s);
-solution getChainNeighbor(solution s);
+solution getChainNeighbor(solution s,Data &d);
 solution getChainNeighbor_ex(solution s);
-solution shake(solution s, int k);
+solution shake(solution s, int k,Data &d);
 solution vnsLocalSearch(solution s);

@@ -9,11 +9,13 @@ solution construct_Tabu(Data & d,Record_move &rm)
 	{
 		++current_iterator;
 		int k = rand() % d.get_vehicle_number();
-		s.get_Tour(k).insert_node(s.get_Tour(k).get_length(), i,d);
-		s.get_Tour(k).insert_node(s.get_Tour(k).get_length(), i+d.get_vertex_number()/2, d);
-		if (s.get_Tour(k).get_length() == 2) {
+		Tour tt = s.get_Tour(k);
+		tt.insert_node(s.get_Tour(k).get_length(), i,d);
+		tt.insert_node(s.get_Tour(k).get_length(), i+d.get_vertex_number()/2, d);
+		if (tt.get_length() == 2) {
 			s.set_length(s.get_length() + 1);
 		}
+		s.set_tourlist(tt, k);
 		rm.setRecord(i, k, 0);
 	}
 	return s;
@@ -100,7 +102,7 @@ solution construct_Para(Data & d)
 	return solution();
 }
 
-double vnsCriterion1(Tour & t, Point a,Data &d)
+double vnsCriterion1(Tour  t, Point a,Data &d)
 {
 	/*origin origin*/
 	std::vector<int> nodelist = t.get_nodelist();
@@ -109,7 +111,7 @@ double vnsCriterion1(Tour & t, Point a,Data &d)
 	return ans;
 }
 
-double vnsCriterion2(Tour & t, Point a,Data &d)
+double vnsCriterion2(Tour  t, Point a,Data &d)
 {
 	/*origin destination*/
 	std::vector<int> nodelist = t.get_nodelist();
@@ -117,14 +119,14 @@ double vnsCriterion2(Tour & t, Point a,Data &d)
 	return dis(d.get_point(lastpickup),a);
 }
 
-double vnsCriterion3(Tour & t, Point a,Data &d)
+double vnsCriterion3(Tour  t, Point a,Data &d)
 {
 	std::vector<int> nodelist = t.get_nodelist();
 	int lastDelivery = *(nodelist.end() - 1);
 	return dis(d.get_point(lastDelivery),a);
 }
 
-double vnsCriterion4(Tour & t, Point a,Data &d)
+double vnsCriterion4(Tour  t, Point a,Data &d)
 {
 	std::vector<int> nodelist = t.get_nodelist();
 	int lastDelivery = *(nodelist.end() - 1);

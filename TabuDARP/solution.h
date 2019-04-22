@@ -11,7 +11,7 @@ private:
 public:
 	solution() {  feasibility = false; cost = 0; length = 0; }
 	solution(const solution & s);
-	Tour &get_Tour(int index);
+	Tour get_Tour(int index);
 	int get_length();
 	double get_cost(Parameter &p,Data &d);
 	bool get_feasibility();

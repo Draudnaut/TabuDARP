@@ -246,29 +246,25 @@ void VariableNeighborSearch(solution s, Parameter p, Data &d,int indicate)
 	while (end - start < 60 * CLOCKS_PER_SEC)
 	{
 		// shaking
-		solution s_ = shake(s, neighboring_k);
+		solution s_ = shake(s, neighboring_k,d);
 		//local search
 		double prand = ((double)rand() / RAND_MAX);
 		solution s__;
 		if (s_.hard_cost() < 1.02*s.hard_cost() or prand < 0.01) {
 			s__ = vnsLocalSearch(s_);
 		}
-		else
-		{
+		else{
 			s__ = s;
 		}
 		//move or not
-		if (s__.get_cost(p, d) < s.get_cost(p, d))
-		{
-			if (s__.hard_cost() >= 1.05*s.hard_cost())
-			{
+		if (s__.get_cost(p, d) < s.get_cost(p, d)){
+			if (s__.hard_cost() >= 1.05*s.hard_cost()){
 				s__ = vnsLocalSearch(s__);
 			}
 			s = s__;
 			neighboring_k = 0;
 		}
-		if (s__.get_feasibility() == true and s__.get_cost(p, d) < sBest.get_cost(p, d))
-		{
+		if (s__.get_feasibility() == true and s__.get_cost(p, d) < sBest.get_cost(p, d)){
 			sBest = s__;
 		}
 		//modify k
@@ -397,9 +393,30 @@ solution getSwapNeighbor(solution s,Data &d)
 		}
 	}
 	/*delete request sequence*/
+	Tour t1 = s.get_Tour(touri);
+	Tour t2 = s.get_Tour(tourj);
+
 	/*
 	   reinsert request
 	   sequence1 to tour2
 	   sequence2 to tour1
 	*/
+	return solution();
+}
+
+solution getChainNeighbor(solution s, Data & d)
+{
+	return solution();
+}
+
+solution shake(solution s, int k,Data &d)
+{
+	if (k % 2 == 1) s = getSwapNeighbor(s, d);
+	else s = getChainNeighbor(s, d);
+	return s;
+}
+
+solution vnsLocalSearch(solution s)
+{
+	return solution();
 }

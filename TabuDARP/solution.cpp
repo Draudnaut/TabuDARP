@@ -12,7 +12,7 @@ solution::solution(const solution & s)
 	}
 }
 
-Tour& solution::get_Tour(int index)
+Tour solution::get_Tour(int index)
 {
 	return tourlist[index];
 }

@@ -9,7 +9,7 @@
 solution construct_Tabu(Data &d,Record_move &rm);
 solution construct_VNS(Data &d);
 solution construct_Para(Data &d);
-double vnsCriterion1(Tour &t, Point a,Data &d);
-double vnsCriterion2(Tour &t, Point a,Data &d);
-double vnsCriterion3(Tour &t, Point a,Data &d);
-double vnsCriterion4(Tour &t, Point a,Data &d);
+double vnsCriterion1(Tour t, Point a,Data &d);
+double vnsCriterion2(Tour t, Point a,Data &d);
+double vnsCriterion3(Tour t, Point a,Data &d);
+double vnsCriterion4(Tour t, Point a,Data &d);
