@@ -32,8 +32,11 @@ solution construct_VNS(Data & d)
 	int index = 0;
 	for (int i = 0; i < vehicle_number; i++)
 	{
-		s.get_Tour(i).insert_node(s.get_Tour(i).get_length(), requestArray[index].id, d);
-		s.get_Tour(i).insert_node(s.get_Tour(i).get_length(), requestArray[index].id + (d.get_vertex_number() / 2), d);
+		Tour tt = s.get_Tour(i);
+		tt.insert_node(tt.get_length(), requestArray[index].id, d);
+		tt.insert_node(tt.get_length(), requestArray[index].id + (d.get_vertex_number() / 2), d);
+		s.set_tourlist(tt, i);
+		s.set_length(s.get_length() + 1);
 		index++;
 	}
 	while (index < requestArray.size())
@@ -90,8 +93,10 @@ solution construct_VNS(Data & d)
 				}
 			}
 		}
-		s.get_Tour(tour_insert).insert_node(s.get_Tour(tour_insert).get_length(), requestArray[index].id, d);
-		s.get_Tour(tour_insert).insert_node(s.get_Tour(tour_insert).get_length(), requestArray[index].id + d.get_vertex_number()/2, d);
+		Tour tt = s.get_Tour(tour_insert);
+		tt.insert_node(tt.get_length(), requestArray[index].id, d);
+		tt.insert_node(tt.get_length(), requestArray[index].id + d.get_vertex_number()/2, d);
+		s.set_tourlist(tt, tour_insert);
 		index++;
 	}
 	return s;
