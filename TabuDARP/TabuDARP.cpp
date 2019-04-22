@@ -43,7 +43,7 @@ int main(int argc,char* argv[])
 	}
 	/*Tabu Search components*/
 	if(search_function==Tabu) TabuSearch(s, p, d,rm,0);
-	else if (search_function == VNS) VariableNeighborSearch(s, p, d,0);
+	else if (search_function == VNS) VariableNeighborSearch(s, p, d, 0);
 	else paraNeighborSearch(s, p);
 	return 0;
 }
