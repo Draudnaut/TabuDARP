@@ -107,6 +107,7 @@ void Tour::delete_node(int node)
 			break;
 		}
 	}
+	if (index == -1) return;
 	for (int i = index; i < len-1; i++)
 	{
 		nodelist[i] = nodelist[i+1];

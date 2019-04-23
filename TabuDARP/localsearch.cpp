@@ -237,16 +237,19 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm,int indicator)
 	fclose(f);
 }
 
-void VariableNeighborSearch(solution s, Parameter p, Data &d,int indicate)
+void VariableNeighborSearch(solution s, Parameter &p, Data &d,int indicate)
 {
 	int neighboring_k = 1;
 	clock_t start, end;
 	start = end = clock();
 	solution sBest = s;
-	while (end - start < 60 * CLOCKS_PER_SEC)
+	int iter = 0;
+	while (end - start < 5*60 * CLOCKS_PER_SEC)
 	{
 		// shaking
-		solution s_ = shake(s, neighboring_k,d);
+		printf("current iteration %d , cost %.4lf\n", ++iter, s.get_cost(p, d));
+		solution s_ = shake(s, neighboring_k,d,p);
+		p.update(s_.get_feasibility());
 		//local search
 		double prand = ((double)rand() / RAND_MAX);
 		solution s__;
@@ -269,6 +272,7 @@ void VariableNeighborSearch(solution s, Parameter p, Data &d,int indicate)
 		}
 		//modify k
 		neighboring_k = (neighboring_k % 13) + 1;
+		end = clock();
 	}
 }
 
@@ -339,13 +343,14 @@ solution getSwapNeighbor(solution s,Data &d,Parameter &p)
 	int index_tour1_begin, index_tour1_end, index_tour2_begin, index_tour2_end;
 	index_tour1_begin = rand() % length_tour1;
 	index_tour1_end = rand() % length_tour1;
-	while (index_tour1_end <= index_tour1_begin) index_tour1_end = rand() % length_tour2;
+	if (index_tour1_end <= index_tour1_begin) std::swap(index_tour1_begin,index_tour1_end);
 	index_tour2_begin = rand() % length_tour2;
 	index_tour2_end = rand() % length_tour2;
-	while (index_tour2_end <= index_tour2_begin) index_tour2_end = rand() % length_tour2;
+	if (index_tour2_end <= index_tour2_begin) std::swap(index_tour2_begin,index_tour2_end);
 	std::vector<int> requestTour1, requestTour2;
 	/*get request sequence*/
-	while (index_tour1_begin <= index_tour1_end)
+	int i = index_tour1_begin;
+	while (i <= index_tour1_end)
 	{
 		int node = s.get_Tour(touri).get_node(index_tour1_begin);
 		int flag = 0;
@@ -367,11 +372,12 @@ solution getSwapNeighbor(solution s,Data &d,Parameter &p)
 				requestTour1.push_back(node - d.get_vertex_number() / 2);
 			}
 		}
-		index_tour1_begin++;
+		i++;
 	}
-	while (index_tour2_begin <= index_tour2_end)
+	i = index_tour2_begin;
+	while (i <= index_tour2_end)
 	{
-		int node = s.get_Tour(touri).get_node(index_tour2_begin);
+		int node = s.get_Tour(tourj).get_node(index_tour2_begin);
 		int flag = 0;
 		for (auto nodeExist : requestTour2)
 		{
@@ -391,6 +397,7 @@ solution getSwapNeighbor(solution s,Data &d,Parameter &p)
 				requestTour2.push_back(node - d.get_vertex_number() / 2);
 			}
 		}
+		i++;
 	}
 	/*delete request sequence*/
 	Tour t1 = s.get_Tour(touri);
@@ -405,8 +412,8 @@ solution getSwapNeighbor(solution s,Data &d,Parameter &p)
 		t2.delete_node(node);
 		t2.delete_node(node + (d.get_vertex_number() / 2));
 	}
-	t1.update(d);
-	t2.update(d);
+	//t1.update(d);
+	//t2.update(d);
 	/*
 	   reinsert request
 	   sequence1 to tour2
@@ -426,16 +433,15 @@ solution getChainNeighbor(solution s, Data & d)
 	return solution();
 }
 
-solution shake(solution s, int k,Data &d)
+solution shake(solution s, int k,Data &d,Parameter &p)
 {
-	if (k % 2 == 1) s = getSwapNeighbor(s, d);
-	else s = getChainNeighbor(s, d);
+	s = getSwapNeighbor(s, d, p);
 	return s;
 }
 
 solution vnsLocalSearch(solution s)
 {
-	return solution();
+	return s;
 }
 
 Tour vnsSwapUpdateTour(Tour t, std::vector<int>& requestList,Data &d,Parameter &p)
@@ -453,7 +459,7 @@ Tour vnsSwapUpdateTour(Tour t, std::vector<int>& requestList,Data &d,Parameter &
 			t.insert_node(i, deliveryToInsert, d);
 			for (int j = 0; j <= i; j++)
 			{
-				t.insert_node(i, pickupToInsert, d);
+				t.insert_node(j, pickupToInsert, d);
 				double tcost = t.get_cost(p, d);
 				if (index_pickupToinsert == -1 and index_deliveryToInsert == -1)
 				{
@@ -474,8 +480,9 @@ Tour vnsSwapUpdateTour(Tour t, std::vector<int>& requestList,Data &d,Parameter &
 			}
 			t.delete_node(deliveryToInsert);
 		}
-		t.insert_node(index_pickupToinsert, pickupToInsert, d);
 		t.insert_node(index_deliveryToInsert, deliveryToInsert, d);
+		t.insert_node(index_pickupToinsert, pickupToInsert, d);
+		
 	}
 	return t;
 }

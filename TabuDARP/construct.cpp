@@ -36,7 +36,7 @@ solution construct_VNS(Data & d)
 		tt.insert_node(tt.get_length(), requestArray[index].id, d);
 		tt.insert_node(tt.get_length(), requestArray[index].id + (d.get_vertex_number() / 2), d);
 		s.set_tourlist(tt, i);
-		s.set_length(s.get_length() + 1);
+		//s.set_length(s.get_length() + 1);
 		index++;
 	}
 	while (index < requestArray.size())

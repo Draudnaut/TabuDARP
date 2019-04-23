@@ -30,7 +30,7 @@ std::vector<neighbor_structure> getNeighbors_ex(solution s,Data &d,int iteration
 solution BigRemove(solution s,Data &d,Parameter &p);
 bool tabulist_contains(std::vector<int> &tabuList,solution &s);
 void TabuSearch(solution s, Parameter p,Data &d,Record_move &rm,int indicator);
-void VariableNeighborSearch(solution s, Parameter p,Data &d,int indicate);
+void VariableNeighborSearch(solution s, Parameter &p,Data &d,int indicate);
 void paraNeighborSearch(solution s, Parameter p);
 solution present_solution(solution Base, neighbor_structure change, Parameter &p, Data &d);
 void paraTabuSearch(solution s, Parameter p, Data &d, Record_move &rm);
@@ -38,6 +38,6 @@ solution getSwapNeighbor(solution s,Data &d,Parameter &p);
 solution getSwapNeighbor_ex(solution s);
 solution getChainNeighbor(solution s,Data &d);
 solution getChainNeighbor_ex(solution s);
-solution shake(solution s, int k,Data &d);
+solution shake(solution s, int k,Data &d,Parameter &p);
 solution vnsLocalSearch(solution s);
 Tour vnsSwapUpdateTour(Tour t, std::vector<int> &requestList, Data &d,Parameter &p);
