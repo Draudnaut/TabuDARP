@@ -327,7 +327,7 @@ void paraTabuSearch(solution s, Parameter p, Data & d, Record_move & rm)
 {
 }
 
-solution getSwapNeighbor(solution s,Data &d)
+solution getSwapNeighbor(solution s,Data &d,Parameter &p)
 {
 	int len = s.get_length();
 	int touri = rand() % len;
@@ -395,13 +395,30 @@ solution getSwapNeighbor(solution s,Data &d)
 	/*delete request sequence*/
 	Tour t1 = s.get_Tour(touri);
 	Tour t2 = s.get_Tour(tourj);
-
+	for (auto node : requestTour1)
+	{
+		t1.delete_node(node);
+		t1.delete_node(node + (d.get_vertex_number() / 2));
+	}
+	for (auto node : requestTour2)
+	{
+		t2.delete_node(node);
+		t2.delete_node(node + (d.get_vertex_number() / 2));
+	}
+	t1.update(d);
+	t2.update(d);
 	/*
 	   reinsert request
 	   sequence1 to tour2
 	   sequence2 to tour1
 	*/
-	return solution();
+	t1 = vnsSwapUpdateTour(t1, requestTour2,d,p);
+	t2 = vnsSwapUpdateTour(t2, requestTour1,d,p);
+	t1.update(d);
+	t2.update(d);
+	s.set_tourlist(t1, touri);
+	s.set_tourlist(t2, tourj);
+	return s;
 }
 
 solution getChainNeighbor(solution s, Data & d)
@@ -419,4 +436,46 @@ solution shake(solution s, int k,Data &d)
 solution vnsLocalSearch(solution s)
 {
 	return solution();
+}
+
+Tour vnsSwapUpdateTour(Tour t, std::vector<int>& requestList,Data &d,Parameter &p)
+{
+	for (auto request : requestList)
+	{
+		double cost;
+		int pickupToInsert = request;
+		int deliveryToInsert = request + d.get_vertex_number() / 2;
+		int index_pickupToinsert = -1;
+		int index_deliveryToInsert = -1;
+		int length = t.get_length();
+		for (int i = 0; i <= length; i++)
+		{
+			t.insert_node(i, deliveryToInsert, d);
+			for (int j = 0; j <= i; j++)
+			{
+				t.insert_node(i, pickupToInsert, d);
+				double tcost = t.get_cost(p, d);
+				if (index_pickupToinsert == -1 and index_deliveryToInsert == -1)
+				{
+					index_deliveryToInsert = i;
+					index_pickupToinsert = j;
+					cost = tcost;
+				}
+				else
+				{
+					if (tcost < cost)
+					{
+						index_pickupToinsert = j;
+						index_deliveryToInsert = i;
+						cost = tcost;
+					}
+				}
+				t.delete_node(pickupToInsert);
+			}
+			t.delete_node(deliveryToInsert);
+		}
+		t.insert_node(index_pickupToinsert, pickupToInsert, d);
+		t.insert_node(index_deliveryToInsert, deliveryToInsert, d);
+	}
+	return t;
 }
