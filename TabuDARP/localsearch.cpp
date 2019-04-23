@@ -482,7 +482,6 @@ Tour vnsSwapUpdateTour(Tour t, std::vector<int>& requestList,Data &d,Parameter &
 		}
 		t.insert_node(index_deliveryToInsert, deliveryToInsert, d);
 		t.insert_node(index_pickupToinsert, pickupToInsert, d);
-		
 	}
 	return t;
 }
