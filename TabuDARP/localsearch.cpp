@@ -244,10 +244,11 @@ void VariableNeighborSearch(solution s, Parameter &p, Data &d,int indicate)
 	start = end = clock();
 	solution sBest = s;
 	int iter = 0;
+	double bCost = sBest.get_cost(p,d);
 	while (end - start < 5*60 * CLOCKS_PER_SEC)
 	{
 		// shaking
-		printf("current iteration %d , cost %.4lf\n", ++iter, sBest.get_cost(p, d));
+		printf("current iteration %d , cost %.4lf\n", ++iter, bCost);
 		solution s_ = shake(s, neighboring_k,d,p,indicate);
 		s_.update(p, d);
 		p.update(s_.get_feasibility());
@@ -266,9 +267,11 @@ void VariableNeighborSearch(solution s, Parameter &p, Data &d,int indicate)
 				s__ = vnsLocalSearch(s__);
 			}
 			s = s__;
+			if (s.get_cost(p, d) < bCost) bCost = s.get_cost(p, d);
 			neighboring_k = 0;
 		}
 		if (s__.get_feasibility() == true and s__.get_cost(p, d) < sBest.get_cost(p, d)){
+			printf("find feasible , iter : %d\n", iter);
 			sBest = s__;
 		}
 		//modify k
@@ -447,7 +450,7 @@ solution getSwapNeighbor(solution s,Data &d,Parameter &p,int indicate)
 	return s;
 }
 
-solution getChainNeighbor(solution s, Data & d)
+solution getChainNeighbor(solution s, Data &d, Parameter &p, int indicate)
 {
 	return solution();
 }

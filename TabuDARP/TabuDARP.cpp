@@ -44,8 +44,8 @@ int main(int argc,char* argv[])
 		s = construct_Para(d); 
 	}
 	/*Tabu Search components*/
-	if(search_function==Tabu) TabuSearch(s, p, d,rm,0);
-	else if (search_function == VNS) VariableNeighborSearch(s, p, d, 0);
+	if(search_function==Tabu) TabuSearch(s, p, d,rm,1);
+	else if (search_function == VNS) VariableNeighborSearch(s, p, d, 1);
 	else paraNeighborSearch(s, p);
 	return 0;
 }
