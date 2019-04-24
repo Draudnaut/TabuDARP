@@ -68,6 +68,7 @@ void Parameter::update(bool feasible)
 	if (feasible)
 	{
 		//printf("update feasible\n");
+		if (alpha == 0 or beta == 0 or gamma == 0 or tao == 0) return;
 		alpha /= (1 + delta);
 		beta /= (1 + delta);
 		gamma /= (1 + delta);

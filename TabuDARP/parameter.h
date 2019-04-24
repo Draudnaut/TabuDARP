@@ -17,4 +17,5 @@ public:
 	int get_ke();
 	int get_theta();
 	void update(bool feasible);
+	void output() { std::cout << alpha << " " << beta << " " << gamma << " " << tao << std::endl; }
 };

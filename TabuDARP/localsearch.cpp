@@ -247,8 +247,9 @@ void VariableNeighborSearch(solution s, Parameter &p, Data &d,int indicate)
 	while (end - start < 5*60 * CLOCKS_PER_SEC)
 	{
 		// shaking
-		printf("current iteration %d , cost %.4lf\n", ++iter, s.get_cost(p, d));
-		solution s_ = shake(s, neighboring_k,d,p);
+		printf("current iteration %d , cost %.4lf\n", ++iter, sBest.get_cost(p, d));
+		solution s_ = shake(s, neighboring_k,d,p,indicate);
+		s_.update(p, d);
 		p.update(s_.get_feasibility());
 		//local search
 		double prand = ((double)rand() / RAND_MAX);
@@ -273,6 +274,8 @@ void VariableNeighborSearch(solution s, Parameter &p, Data &d,int indicate)
 		//modify k
 		neighboring_k = (neighboring_k % 13) + 1;
 		end = clock();
+		//p.output();
+		s.update(p,d);
 	}
 }
 
@@ -331,11 +334,27 @@ void paraTabuSearch(solution s, Parameter p, Data & d, Record_move & rm)
 {
 }
 
-solution getSwapNeighbor(solution s,Data &d,Parameter &p)
+solution getSwapNeighbor(solution s,Data &d,Parameter &p,int indicate)
 {
 	int len = s.get_length();
 	int touri = rand() % len;
 	int tourj = rand() % len;
+	if (indicate == 1)
+	{
+		std::vector<std::pair<int, Tour>> tourList;
+		for (int i = 0; i < len; i++)
+		{
+			tourList.push_back(std::make_pair(i, s.get_Tour(i)));
+		}
+		std::sort(tourList.begin(), tourList.end(),
+			[&](std::pair<int, Tour> &x, std::pair<int, Tour> &y)->int 
+		    {
+			return x.second.get_cost(p, d) > y.second.get_cost(p, d);
+		    }
+		);
+		touri = tourList.begin()->first;
+		tourj = (tourList.end() - 1)->first;
+	}
 	while (tourj == touri) tourj = rand() % len;
 	int length_tour1 = s.get_Tour(touri).get_length();
 	int length_tour2 = s.get_Tour(tourj).get_length();
@@ -433,9 +452,9 @@ solution getChainNeighbor(solution s, Data & d)
 	return solution();
 }
 
-solution shake(solution s, int k,Data &d,Parameter &p)
+solution shake(solution s, int k,Data &d,Parameter &p,int indicate)
 {
-	s = getSwapNeighbor(s, d, p);
+	s = getSwapNeighbor(s, d, p,indicate);
 	return s;
 }
 
