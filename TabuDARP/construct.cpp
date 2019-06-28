@@ -23,6 +23,7 @@ solution construct_Tabu(Data & d,Record_move &rm)
 
 solution construct_VNS(Data & d)
 {
+	srand(time(NULL));
 	std::vector<Point> PointArray = d.pointArray();
 	std::vector<Point> requestArray(PointArray.begin()+1, PointArray.begin() + (PointArray.size() / 2));
 	std::sort(requestArray.begin(), requestArray.end(), cmp_vns);

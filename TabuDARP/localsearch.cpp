@@ -160,7 +160,7 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm,int indicator)
 	start = end = clock();
 	int tabu_length = tabuList.size();
 	int countEvaluation = 0;
-	while (end - start < 30*60 * CLOCKS_PER_SEC)
+	while (current_iterator < 4000)
 	{
 		++current_iterator;
 		fprintf(f, "%d %.4lf\n", countEvaluation, sBest.get_cost(p, d));
@@ -239,14 +239,17 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm,int indicator)
 
 void VariableNeighborSearch(solution s, Parameter &p, Data &d,int indicate)
 {
+	srand(time(NULL));
 	int neighboring_k = 1;
 	clock_t start, end;
-	start = end = clock();
+	clock_t sum_time = 0;
+	//start = end = clock();
 	solution sBest = s;
 	int iter = 0;
 	double bCost = sBest.get_cost(p,d);
-	while (end - start < 5*60 * CLOCKS_PER_SEC)
+	while (iter < 4000)
 	{
+		start = clock();
 		// shaking
 		printf("current iteration %d , cost %.4lf\n", ++iter, bCost);
 		solution s_ = shake(s, neighboring_k,d,p,indicate);
@@ -272,6 +275,7 @@ void VariableNeighborSearch(solution s, Parameter &p, Data &d,int indicate)
 		}
 		if (s__.get_feasibility() == true and s__.get_cost(p, d) < sBest.get_cost(p, d)){
 			printf("find feasible , iter : %d\n", iter);
+			indicate = 0;
 			sBest = s__;
 		}
 		//modify k
@@ -279,7 +283,9 @@ void VariableNeighborSearch(solution s, Parameter &p, Data &d,int indicate)
 		end = clock();
 		//p.output();
 		s.update(p,d);
+		sum_time += end - start;
 	}
+	printf("aver time : %.4lf\n", (double)(sum_time)/(4000*CLOCKS_PER_SEC));
 }
 
 void paraNeighborSearch(solution s, Parameter p)

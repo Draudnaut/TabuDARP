@@ -19,7 +19,7 @@ int count_request_route[maxn];
 int main(int argc,char* argv[])
 {
 	/*initialization parameter*/
-	const char *path = "E:/dataset/R6b.txt";
+	const char *path = "E:/dataset/R5a.txt";
 	Data d(path);
 	Parameter p(1,1,1,1,0.5,10,7.5*log(d.get_vertex_number()/2),15);
 	solution s;
@@ -45,7 +45,7 @@ int main(int argc,char* argv[])
 	}
 	/*Tabu Search components*/
 	if(search_function==Tabu) TabuSearch(s, p, d,rm,1);
-	else if (search_function == VNS) VariableNeighborSearch(s, p, d, 1);
+	else if (search_function == VNS) VariableNeighborSearch(s, p, d, 0);
 	else paraNeighborSearch(s, p);
 	return 0;
 }
