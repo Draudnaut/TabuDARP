@@ -11,6 +11,7 @@
 #include <mutex>
 #include <thread>
 #include <random>
+
 struct TourBlock
 {
 	std::vector<Tour> Tourset;
@@ -30,7 +31,7 @@ std::vector<neighbor_structure> getNeighbors_ex(solution s,Data &d,int iteration
 solution BigRemove(solution s,Data &d,Parameter &p);
 bool tabulist_contains(std::vector<int> &tabuList,solution &s);
 void TabuSearch(solution s, Parameter p,Data &d,Record_move &rm,int indicator);
-void VariableNeighborSearch(solution s, Parameter &p,Data &d,int indicate);
+void VariableNeighborSearch(solution s, Parameter &p,Data &d,int indicate,Answer_Record &ans);
 void paraNeighborSearch(solution s, Parameter p);
 solution present_solution(solution Base, neighbor_structure change, Parameter &p, Data &d);
 void paraTabuSearch(solution s, Parameter p, Data &d, Record_move &rm);

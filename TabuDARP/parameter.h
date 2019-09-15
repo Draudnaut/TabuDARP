@@ -1,4 +1,5 @@
 #pragma once
+
 class Parameter
 {
 private:
@@ -17,5 +18,6 @@ public:
 	int get_ke();
 	int get_theta();
 	void update(bool feasible);
+	void set(double _alpha, double _beta, double _gamma, double _tao, double _delta, double _eta, double _theta, int _ke);
 	void output() { std::cout << alpha << " " << beta << " " << gamma << " " << tao << std::endl; }
 };

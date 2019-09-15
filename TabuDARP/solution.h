@@ -24,3 +24,10 @@ public:
 	double hard_cost();
 	void checkFeasibility(Data &d);
 };
+struct Answer_Record
+{
+	int first_to_discover_improve;
+	double BestFind_Improve;
+	int first_to_discover_noimprove;
+	double BestFine_nonimprove;
+};

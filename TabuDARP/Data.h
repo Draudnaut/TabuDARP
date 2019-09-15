@@ -26,4 +26,5 @@ public:
 	void printTimeWindow();
 	void pruning();
 	int sizeOfinfeasibleSet() { return infeasibleEdge.size(); }
+	std::string getDataset() { return std::string(dataset, strlen(dataset)); }
 };

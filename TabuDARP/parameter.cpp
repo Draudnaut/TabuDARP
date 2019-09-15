@@ -83,3 +83,15 @@ void Parameter::update(bool feasible)
 		tao *= (1 + delta);
 	}
 }
+
+void Parameter::set(double _alpha, double _beta, double _gamma, double _tao, double _delta, double _eta, double _theta, int _ke)
+{
+	alpha = _alpha;
+	beta = _beta;
+	gamma = _gamma;
+	tao = _tao;
+	delta = _delta;
+	eta = _eta;
+	ke = _ke;
+	theta = _theta;
+}

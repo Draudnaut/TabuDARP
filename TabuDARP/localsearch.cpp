@@ -237,7 +237,7 @@ void TabuSearch(solution s, Parameter p, Data &d, Record_move &rm,int indicator)
 	fclose(f);
 }
 
-void VariableNeighborSearch(solution s, Parameter &p, Data &d,int indicate)
+void VariableNeighborSearch(solution s, Parameter &p, Data &d,int indicate,Answer_Record &ans)
 {
 	srand(time(NULL));
 	int neighboring_k = 1;
@@ -247,45 +247,58 @@ void VariableNeighborSearch(solution s, Parameter &p, Data &d,int indicate)
 	solution sBest = s;
 	int iter = 0;
 	double bCost = sBest.get_cost(p,d);
-	while (iter < 4000)
+	std::string path("E:/Result/");
+	std::string dataset = d.getDataset();
+	std::string filename;
+	if (indicate == 1)
 	{
+		filename ="/improve.txt";
+	}
+	else
+	{
+		filename = "/non_improve.txt";
+	}
+	path += dataset += filename;
+	FILE *f = fopen(path.c_str(), "w+");
+	int flag = 0;
+	while (iter < 10000)
+	{
+		if (iter % 1000 == 0) printf(" %d completed\n", iter);
 		start = clock();
 		// shaking
-		printf("current iteration %d , cost %.4lf\n", ++iter, bCost);
+		fprintf(f, "%d %.4lf\n", iter, bCost);
+		//printf("current iteration %d , cost %.4lf\n", ++iter, bCost);
 		solution s_ = shake(s, neighboring_k,d,p,indicate);
 		s_.update(p, d);
 		p.update(s_.get_feasibility());
 		//local search
-		double prand = ((double)rand() / RAND_MAX);
-		solution s__;
-		if (s_.hard_cost() < 1.02*s.hard_cost() or prand < 0.01) {
-			s__ = vnsLocalSearch(s_);
-		}
-		else{
-			s__ = s;
-		}
-		//move or not
-		if (s__.get_cost(p, d) < s.get_cost(p, d)){
-			if (s__.hard_cost() >= 1.05*s.hard_cost()){
-				s__ = vnsLocalSearch(s__);
-			}
-			s = s__;
+		if (s_.get_cost(p, d) < s.get_cost(p, d)){
+			s = s_;
 			if (s.get_cost(p, d) < bCost) bCost = s.get_cost(p, d);
-			neighboring_k = 0;
 		}
-		if (s__.get_feasibility() == true and s__.get_cost(p, d) < sBest.get_cost(p, d)){
-			printf("find feasible , iter : %d\n", iter);
-			indicate = 0;
-			sBest = s__;
-		}
-		//modify k
-		neighboring_k = (neighboring_k % 13) + 1;
-		end = clock();
-		//p.output();
+		
 		s.update(p,d);
-		sum_time += end - start;
+		//s.checkFeasibility(d);
+		//std::cout << "Feasiblity " << s.get_feasibility() << std::endl;
+		if (s.get_feasibility() == true and s.get_cost(p, d) < sBest.get_cost(p, d) and flag == 0){
+			//printf("find feasible , iter : %d\n", iter);
+			flag = 1;
+			if (indicate == 1)
+			{
+				ans.first_to_discover_improve = iter;
+			}
+			else
+			{
+				ans.first_to_discover_noimprove = iter;
+			}
+			indicate = 0;
+			sBest = s_;
+			fputs("feasible",f);
+		}
+		iter++;
 	}
-	printf("aver time : %.4lf\n", (double)(sum_time)/(4000*CLOCKS_PER_SEC));
+	ans.BestFind_Improve = bCost;
+	fclose(f);
 }
 
 void paraNeighborSearch(solution s, Parameter p)
